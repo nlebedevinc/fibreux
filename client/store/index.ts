@@ -10,6 +10,7 @@ import Vuex, { Store, Plugin } from 'vuex'
 // import TypedStore from '~/logic/store'
 import { RootStateType } from '~/logic/types'
 import comments from '~/store/records'
+import entries from '~/store/entries'
 
 Vue.use(Vuex)
 
@@ -33,7 +34,10 @@ export default function store(
 ): Store<RootStateType> {
   // const typedStore = new TypedStore()
   return new Store<RootStateType>({
-    'modules': { 'comments': comments },
+    'modules': {
+      'comments': comments,
+      'entries': entries,
+    },
     'plugins': extraContext ? extraContext.plugins : [],
   })
 

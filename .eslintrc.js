@@ -20,11 +20,12 @@ module.exports = {
   'rules': {
     // Sets the import order linting,
     // see: https://github.com/Tibfib/eslint-plugin-import-helpers
-    'import-helpers/order-imports': ['error', {
-      'newlinesBetween': 'always',
-      'groups': ['module', '/^~//', '/^@//'],
-      'alphabetize': { 'order': 'asc', 'ignoreCase': false },
-    }],
+    // 'import-helpers/order-imports': ['error', {
+    //   'newlinesBetween': 'always',
+    //   'groups': ['module', '/^~//', '/^@//'],
+    //   'alphabetize': { 'order': 'asc', 'ignoreCase': false },
+    // }],
+    'compat/compat': 0
   },
 
   'overrides': [],

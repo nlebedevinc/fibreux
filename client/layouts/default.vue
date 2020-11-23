@@ -9,4 +9,5 @@
 // Here you can import or define any other styles that are required for this
 // particular layout. This styles will be considered global.
 // So, please be resposible!
+@import '~/assets/skeleton.css'
 </style>

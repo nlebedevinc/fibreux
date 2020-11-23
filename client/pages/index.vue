@@ -13,6 +13,9 @@
         :comment="comment"
       />
     </section>
+    <NuxtLink to="/entries">
+      Entries
+    </NuxtLink>
   </main>
 </template>
 

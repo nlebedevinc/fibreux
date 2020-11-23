@@ -50,6 +50,10 @@ const nuxtConfig: Configuration = {
     ],
   },
 
+  'serverMiddleware': [
+    { path: '/api', handler: '~/api/index.ts' }
+  ],
+
   /**
    * Specify Nuxt source directory.
    */
@@ -130,7 +134,7 @@ const nuxtConfig: Configuration = {
         if (config.plugins) {
           // Enabling stylelint:
           config.plugins.push(new StylelintWebpackPlugin({
-            'files': 'client/**/*.{vue,scss,css}',
+            'files': 'client/**/*.{vue,scss}',
           }))
         }
       }
