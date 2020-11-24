@@ -6,8 +6,8 @@ import { EntryType, StateType } from '~/logic/entries/types'
 import { RootStateType } from '~/logic/types'
 
 export const actions: ActionTree<StateType, RootStateType> = {
-  async fetchEntries ({ commit }, payload): Promise<EntryType[]> {
-    const list = await entries.fetchEntries(this.$axios, this.$cookies)
+  async fetchEntries ({ commit }): Promise<EntryType[]> {
+    const list = await entries.fetchEntries(this.$axios, this.$cookies, this)
     console.log('action', list)
     commit(reducers.SET_ENTRIES, list)
     return list
@@ -16,5 +16,10 @@ export const actions: ActionTree<StateType, RootStateType> = {
   async login ({ commit }, { token } ): Promise<void> {
     this.$cookies.set('fibreux', token)
     this.$router.replace({'path': '/entries'})
+  },
+
+  async logout({ commit }): Promise<void> {
+    this.$cookies.remove('fibreux')
+    this.$router.replace({'path': '/login'})
   }
 }

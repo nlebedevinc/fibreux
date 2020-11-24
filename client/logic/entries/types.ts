@@ -13,17 +13,16 @@ export const Entry = ts.type({
   'project': ts.string,
 })
 
-// export const AuthOptions = ts.type({
-//   'token': ts.string,
-//   'error': ts.boolean,
-// })
-
-// export type AuthType = ts.TypeOf<typeof AuthOptions>
+export enum Filters {
+  Day,
+  Week,
+  Month,
+}
 
 // Static TypeScript type, that can be used as a regular `type`:
 export type EntryType = ts.TypeOf<typeof Entry>
 
 export interface StateType {
   entries: EntryType[]
-  // auth: AuthType
+  activeFilter: number
 }

@@ -1,11 +1,23 @@
 <template>
   <main>
     <div :class="$style.container">
+      <div :class="$style.rowt">
+    <div :class="$style.navbar">
+      <ul>
+        <li>Pagination here</li>
+        <li>Total</li>
+      </ul>
+      <ul>
+        <li><button class="navbar-link">Day</button></li>
+        <li><button class="navbar-link">Week</button></li>
+        <li><button class="navbar-link">Month</button></li>
+      </ul>
+    </div>
     <section
       v-if="hasEntries"
-      class="row"
+      :class="$style.tablentry"
     >
-      <table class="u-full-width">
+      <table class="">
         <thead>
           <tr>
             <th>Description</th>
@@ -27,6 +39,7 @@
         </tbody>
       </table>
     </section>
+      </div>
     </div>
   </main>
 </template>
@@ -51,8 +64,10 @@ export default class Entries extends Vue {
   @entries.Getter('hasEntries')
   hasEntries!: boolean
 
+  @entries.Getter('activeFilter')
+  activeFilter!: number
+
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
-    console.log('State', this.entries)
     return store.dispatch('entries/fetchEntries')
   }
 }
@@ -65,8 +80,40 @@ export default class Entries extends Vue {
   justify-content: center;
 }
 
-.row {
+.rowt {
+  width: 100%;
   padding-left: 96px;
   padding-right: 96px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  width: 100%;
+}
+
+ul {
+  list-style-type: none;
+}
+
+td {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+ul li {
+  display: inline;
+}
+
+ul li button   {
+  background: none;
+  border: none;
+}
+
+.tablentry {
+  border-top: 1px solid rgb(223, 223, 222)
 }
 </style>

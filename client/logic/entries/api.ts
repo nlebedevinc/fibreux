@@ -1,9 +1,11 @@
 import { AxiosInstance } from 'axios'
 import { NuxtCookies } from 'cookie-universal-nuxt'
+import { Store } from 'vuex'
 import * as ts from 'io-ts'
 import * as tPromise from 'io-ts-promise'
 
 import { Entry, EntryType } from '~/logic/entries/types'
+import { RootStateType } from '../types'
 
 const createRequestBody = (): any => ([
   {
@@ -85,18 +87,24 @@ const methods = {
   async fetchEntries (
     $axios: AxiosInstance,
     $cookie: NuxtCookies,
+    $store: Store<RootStateType>,
   ): Promise<EntryType[]> {
-    const cookie = $cookie.getAll()
-    console.log('Cookie', cookie)
-    const headers = { 'Authorization': 'Token 919de886.2ad6ae3beba581dc84144d35adfc5958872' }
+    try {
+      const token = $cookie.get('fibreux')
+      const headers = { 'Authorization': `Token ${token}` }
+      const body = createRequestBody();
 
-    const body = createRequestBody();
+      const response = await $axios.post('/api/commands', body, { headers })
+      const result = parseResponse(response.data);
 
-    const response = await $axios.post('/api/commands', body, { headers })
+      return tPromise.decode(ts.array(Entry), result)
+    } catch (error) {
+      // if (error.response.status === 401) {
+      //   $store.dispatch('entries/logout')
+      // }
 
-    const result = parseResponse(response.data);
-
-    return tPromise.decode(ts.array(Entry), result)
+      return []
+    }
   },
 }
 
