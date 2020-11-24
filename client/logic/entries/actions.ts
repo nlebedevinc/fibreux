@@ -13,7 +13,8 @@ export const actions: ActionTree<StateType, RootStateType> = {
     return list
   },
 
-  async doAuth ({ commit }, { token } ): Promise<void> = {
-    this.$cookies.set
+  async login ({ commit }, { token } ): Promise<void> {
+    this.$cookies.set('fibreux', token)
+    this.$router.replace({'path': '/entries'})
   }
 }

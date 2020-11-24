@@ -1,8 +1,11 @@
 <template>
   <main>
     <div :class="$style.container">
-      <form action="">
-        <input class="u-full-width" type="text" placeholder="Fibery token" id="token">
+      <form @submit.prevent="login">
+        <label for="token">
+          <h2>Token:</h2>
+          <input v-model="token" class="u-full-width" type="text" placeholder="Fibery token" id="token">
+        </label>
         <input class="button-primary" type="submit" value="Submit">
       </form>
     </div>
@@ -12,22 +15,16 @@
 <script lang="ts">
 import Component from 'nuxt-class-component'
 import Vue from 'vue'
-import { Store } from 'vuex'
-import { namespace } from 'vuex-class'
+// import { namespace } from 'vuex-class'
 
-import { StateType, EntryType } from '~/logic/entries/types'
-
-const entries = namespace('entries')
+// const entries = namespace('entries')
 
 @Component({})
 export default class Login extends Vue {
+  token: string = '';
 
-  login({ store }: { store: Store<StateType>}): Promise<void> {
-    return store.dispatch('entries/login', )
-  }
-
-  fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
-    return store.dispatch('entries/fetchEntries')
+  login(): Promise<void> {
+    return this.$store.dispatch('entries/login', { token: this.token })
   }
 }
 </script>

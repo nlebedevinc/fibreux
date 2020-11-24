@@ -75,7 +75,7 @@ const nuxtConfig: Configuration = {
   'modules': [
     'nuxt-vuex-router-sync',
     '@nuxtjs/axios',
-    '@nuxtjs/auth',
+    '@nuxtjs/proxy',
     'nuxt-imagemin',
     'cookie-universal-nuxt',
   ],
@@ -89,19 +89,12 @@ const nuxtConfig: Configuration = {
     'https': true,
     'proxyHeadersIgnore': ['accept', 'accept-encoding', 'host'],
     'progress': true,
-    'proxy': false,
+    'proxy': true,
     'retry': true,
   },
 
-  'auth': {
-    'strategies': {
-      'local': {
-        'endpoints': {
-          'login': { 'url': '/login', 'method': 'post', 'propertyName'  : 'data.token' },
-          'logout': false,
-        },
-      },
-    },
+  'proxy': {
+    '/api/': { 'target': 'https://geomotiv.fibery.io', 'pathRewrite': {'^/api/': '/api/'}, 'changeOrigin': true }
   },
 
   /**
