@@ -41,7 +41,9 @@ import { StateType, EntryType } from '~/logic/entries/types'
 
 const entries = namespace('entries')
 
-@Component({})
+@Component({
+  middleware: ['auth']
+})
 export default class Entries extends Vue {
   @entries.State('entries')
   entries!: EntryType[]

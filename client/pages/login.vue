@@ -15,11 +15,10 @@
 <script lang="ts">
 import Component from 'nuxt-class-component'
 import Vue from 'vue'
-// import { namespace } from 'vuex-class'
 
-// const entries = namespace('entries')
-
-@Component({})
+@Component({
+  middleware: ['authorized']
+})
 export default class Login extends Vue {
   token: string = '';
 
