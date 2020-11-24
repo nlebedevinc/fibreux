@@ -75,7 +75,9 @@ const nuxtConfig: Configuration = {
   'modules': [
     'nuxt-vuex-router-sync',
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     'nuxt-imagemin',
+    'cookie-universal-nuxt',
   ],
 
   /**
@@ -89,6 +91,17 @@ const nuxtConfig: Configuration = {
     'progress': true,
     'proxy': false,
     'retry': true,
+  },
+
+  'auth': {
+    'strategies': {
+      'local': {
+        'endpoints': {
+          'login': { 'url': '/login', 'method': 'post', 'propertyName'  : 'data.token' },
+          'logout': false,
+        },
+      },
+    },
   },
 
   /**

@@ -7,9 +7,13 @@ import { RootStateType } from '~/logic/types'
 
 export const actions: ActionTree<StateType, RootStateType> = {
   async fetchEntries ({ commit }, payload): Promise<EntryType[]> {
-    const list = await entries.fetchEntries(this.$axios, payload)
+    const list = await entries.fetchEntries(this.$axios, this.$cookies)
     console.log('action', list)
     commit(reducers.SET_ENTRIES, list)
     return list
   },
+
+  async doAuth ({ commit }, { token } ): Promise<void> = {
+    this.$cookies.set
+  }
 }
