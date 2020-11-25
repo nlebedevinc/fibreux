@@ -153,7 +153,6 @@ export default class Entries extends Vue {
   }
 
   get computedWeek(): Readonly<Record<string, boolean>> {
-    console.log('Computed callled')
     return {
       [this.$style['filter-active']]: this.activeFilter === Filters.Week,
     }
