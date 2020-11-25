@@ -12,11 +12,14 @@
         </li>
         <li>Total</li>
       </ul>
-      <ul v-on:click="onFilter">
-        <li><button :class="computedDay" id="1">Day</button></li>
-        <li><button :class="computedWeek" id="2">Week</button></li>
-        <li><button :class="computedMonth" id="3">Month</button></li>
-      </ul>
+      <div>
+        <ul v-on:click="onFilter">
+          <li><button :class="computedDay" id="1">Day</button></li>
+          <li><button :class="computedWeek" id="2">Week</button></li>
+          <li><button :class="computedMonth" id="3">Month</button></li>
+        </ul>
+        <button @click="onNew">New</button>
+      </div>
     </div>
     <section
       v-if="hasEntries"
@@ -135,6 +138,12 @@ export default class Entries extends Vue {
 
   cleanSelected(): void {
     this.$store.dispatch('entries/cleanSelected')
+  }
+
+  onNew(): void {
+    if (!this.selectedEntry) {
+      this.$store.dispatch('entries/create')
+    }
   }
 
   get computedDay(): Readonly<Record<string, boolean>> {

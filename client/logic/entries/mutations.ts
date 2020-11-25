@@ -48,5 +48,22 @@ export const mutations: MutationTree<StateType> = {
     state,
   ): void => {
     state.selectedEntry = null
+  },
+
+  [reducers.CREATE_ENTRY]: (
+    state,
+  ): void => {
+    const entry: EntryType = {
+      'id': 'new',
+      'description': '',
+      'person': '',
+      'project': '',
+      'ticket': '',
+      'time': '',
+      'when': '',
+    }
+
+    state.entries.push(entry)
+    state.selectedEntry = entry
   }
 }
