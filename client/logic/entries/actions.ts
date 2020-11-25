@@ -6,8 +6,8 @@ import { EntryType, StateType } from '~/logic/entries/types'
 import { RootStateType } from '~/logic/types'
 
 export const actions: ActionTree<StateType, RootStateType> = {
-  async fetchEntries ({ commit }): Promise<EntryType[]> {
-    const list = await entries.fetchEntries(this.$axios, this.$cookies, this)
+  async fetchEntries ({ commit }, payload): Promise<EntryType[]> {
+    const list = await entries.fetchEntries(this.$axios, this.$cookies, payload)
     console.log('action', list)
     commit(reducers.SET_ENTRIES, list)
     return list

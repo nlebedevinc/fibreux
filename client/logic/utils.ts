@@ -1,15 +1,15 @@
-import { Filters } from '~/logic/entries/types'
+import { Filters, PeriodType } from '~/logic/entries/types'
 
 export function toPeriod(date: Date): string {
-  let day = date.getUTCDate()
-  let month = date.getUTCMonth() + 1
-  let year = date.getUTCFullYear()
+  const day = date.getDate()
+  const month = date.getMonth() + 1
+  const year = date.getFullYear()
 
   return `${year}-${month}-${day}`
 }
 
-export function calcPeriod(date: Date, filter: number) {
-
+export function calcPeriod(date: Date, filter: number): PeriodType {
+  console.log('calc DATW', date)
   let from: Date;
   let to: Date;
   switch(filter) {
@@ -18,8 +18,8 @@ export function calcPeriod(date: Date, filter: number) {
       to = new Date(date.getFullYear(), date.getMonth() + 1, 0);
       break
     case Filters.Week:
-      let first = date.getDate() - date.getDay()
-      let last = first + 6
+      const first = date.getDate() - date.getDay()
+      const last = first + 6
       from = new Date(date.setDate(first))
       to = new Date(date.setDate(last))
       break

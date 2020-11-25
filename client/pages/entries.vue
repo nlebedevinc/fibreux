@@ -88,6 +88,8 @@ export default class Entries extends Vue {
       return
     }
     this.$store.dispatch('entries/changeFilter', { selected: Number(event.target.id) })
+
+    this.$store.dispatch('entries/fetchEntries', { date: this.currentDate, filter: Number(event.target.id) })
   }
 
   get computedDay(): Readonly<Record<string, boolean>> {

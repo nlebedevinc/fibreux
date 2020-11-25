@@ -1,13 +1,12 @@
 import { AxiosInstance } from 'axios'
 import { NuxtCookies } from 'cookie-universal-nuxt'
-import { Store } from 'vuex'
 import * as ts from 'io-ts'
 import * as tPromise from 'io-ts-promise'
 
-import { Entry, EntryType } from '~/logic/entries/types'
-import { RootStateType } from '../types'
+import { Entry, EntryType, Filters, PeriodType } from '~/logic/entries/types'
+import { calcPeriod } from '~/logic/utils'
 
-const createRequestBody = (): any => ([
+const createRequestBody = (period: PeriodType): any => ([
   {
     'command': 'fibery.entity/query',
     'args': {
@@ -54,15 +53,15 @@ const createRequestBody = (): any => ([
             [
               'Pluto TV/When'
             ],
-            'q/desc'
+            'q/asc'
           ]
         ],
         'q/limit': 'q/no-limit',
         'q/offset': 0
       },
       'params': {
-        '$from': '2020-10-20',
-        '$to': '2020-11-20'
+        '$from': period.from,
+        '$to': period.to,
       }
     }
   }
@@ -87,22 +86,20 @@ const methods = {
   async fetchEntries (
     $axios: AxiosInstance,
     $cookie: NuxtCookies,
-    $store: Store<RootStateType>,
+    payload: { date: Date, filter: number } = { date: new Date(), filter: Filters.Month },
   ): Promise<EntryType[]> {
     try {
+      console.log('CALC', payload, calcPeriod(payload.date, payload.filter))
       const token = $cookie.get('fibreux')
       const headers = { 'Authorization': `Token ${token}` }
-      const body = createRequestBody();
+      const body = createRequestBody(calcPeriod(payload.date, payload.filter))
 
       const response = await $axios.post('/api/commands', body, { headers })
       const result = parseResponse(response.data);
+      console.log(result)
 
       return tPromise.decode(ts.array(Entry), result)
     } catch (error) {
-      // if (error.response.status === 401) {
-      //   $store.dispatch('entries/logout')
-      // }
-
       return []
     }
   },

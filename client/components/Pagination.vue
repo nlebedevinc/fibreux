@@ -54,6 +54,7 @@ export default class Comment extends Vue {
 
     // action call
     this.$store.dispatch('entries/changeDate', { date })
+    this.$store.dispatch('entries/fetchEntries', { date, filter: this.activeFilter })
   }
 
   onNext(): void {
@@ -75,6 +76,7 @@ export default class Comment extends Vue {
 
     // action call
     this.$store.dispatch('entries/changeDate', { date })
+    this.$store.dispatch('entries/fetchEntries', { date, filter: this.activeFilter })
   }
 
   // changeRating(commentId: number, delta: number): void {
