@@ -47,6 +47,10 @@ export const mutations: MutationTree<StateType> = {
   [reducers.CLEAN_SELECTED]: (
     state,
   ): void => {
+    const index = state.entries.findIndex(entry => !entry.id)
+    if (index > -1) {
+      state.entries.splice(index, 1)
+    }
     state.selectedEntry = null
   },
 
@@ -54,7 +58,7 @@ export const mutations: MutationTree<StateType> = {
     state,
   ): void => {
     const entry: EntryType = {
-      'id': 'new',
+      'id': null,
       'description': '',
       'person': '',
       'project': '',

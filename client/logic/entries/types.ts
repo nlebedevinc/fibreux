@@ -4,7 +4,7 @@ import * as ts from 'io-ts'
 
 // Runtime type, that can be used for schema validation:
 export const Entry = ts.type({
-  'id': ts.string,
+  'id': ts.union([ts.string, ts.null]),
   'description': ts.union([ts.string, ts.null]),
   'person': ts.string,
   'when': ts.union([ts.string, ts.null]),
