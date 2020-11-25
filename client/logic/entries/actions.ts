@@ -8,7 +8,6 @@ import { RootStateType } from '~/logic/types'
 export const actions: ActionTree<StateType, RootStateType> = {
   async fetchEntries ({ commit }, payload): Promise<EntryType[]> {
     const list = await entries.fetchEntries(this.$axios, this.$cookies, payload)
-    console.log('action', list)
     commit(reducers.SET_ENTRIES, list)
     return list
   },
@@ -24,13 +23,11 @@ export const actions: ActionTree<StateType, RootStateType> = {
   },
 
   changeFilter ({ commit }, { selected }): number {
-    console.log('Change filter event', selected)
     commit(reducers.SET_FILTER, selected)
     return selected
   },
 
   changeDate ({ commit }, { date }): Date {
-    console.log(date)
     commit(reducers.SET_DATE, date)
     return date
   },
