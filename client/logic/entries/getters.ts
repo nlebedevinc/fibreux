@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex'
 
-import { StateType } from '~/logic/entries/types'
+import { EntryType, StateType } from '~/logic/entries/types'
 import { RootStateType } from '~/logic/types'
 
 export const getters: GetterTree<StateType, RootStateType> = {
@@ -15,5 +15,9 @@ export const getters: GetterTree<StateType, RootStateType> = {
 
   currentDate (state): Date {
     return state.activeDate
-  }
+  },
+
+  selectedEntry (state): EntryType | null {
+    return state.selectedEntry
+  },
 }

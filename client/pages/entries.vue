@@ -29,6 +29,7 @@
             <th>Ticket</th>
             <th>Time</th>
             <th>Date</th>
+            <th>Controls</th>
           </tr>
         </thead>
         <tbody>
@@ -36,10 +37,43 @@
             v-for="entry in entries"
             :key="entry.id"
           >
-            <td>{{ entry.description }}</td>
-            <td>{{ entry.ticket }}</td>
-            <td>{{ entry.time }}</td>
-            <td>{{ entry.when }}</td>
+            <td>
+              <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.description">
+              <span v-else>{{ entry.description }}</span>
+            </td>
+            <td>
+              <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.ticket">
+              <span v-else>{{ entry.ticket }}</span>
+            </td>
+            <td>
+               <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.time">
+              <span v-else>{{ entry.time }}</span>
+            </td>
+            <td>
+              <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.when">
+              <span v-else>{{ entry.when }}</span>
+            </td>
+            <td>
+              <ul v-if="!selectedEntry">
+                <li>
+                  <button>Copy</button>
+                </li>
+                <li>
+                  <button @click="onEntrySelect(entry.id)">Edit</button>
+                </li>
+                <li>
+                  <button>Delete</button>
+                </li>
+              </ul>
+              <ul v-else>
+                <li>
+                  <button>Save</button>
+                </li>
+                <li>
+                  <button @click="cleanSelected">Cancel</button>
+                </li>
+              </ul>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -79,6 +113,9 @@ export default class Entries extends Vue {
   @entries.Getter('currentDate')
   currentDate!: Date
 
+  @entries.Getter('selectedEntry')
+  selectedEntry!: EntryType
+
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
     return store.dispatch('entries/fetchEntries')
   }
@@ -90,6 +127,14 @@ export default class Entries extends Vue {
     this.$store.dispatch('entries/changeFilter', { selected: Number(event.target.id) })
 
     this.$store.dispatch('entries/fetchEntries', { date: this.currentDate, filter: Number(event.target.id) })
+  }
+
+  onEntrySelect(entryId: string): void {
+    this.$store.dispatch('entries/selectEntry', entryId)
+  }
+
+  cleanSelected(): void {
+    this.$store.dispatch('entries/cleanSelected')
   }
 
   get computedDay(): Readonly<Record<string, boolean>> {
@@ -137,6 +182,7 @@ table {
 
 ul {
   list-style-type: none;
+  margin-bottom: 0px;
 }
 
 td {
@@ -159,5 +205,12 @@ ul li button   {
 
 .filter-active {
   border: 1px solid red
+}
+
+button {
+  margin-bottom: 0;
+  padding: 0;
+  height: 12px;
+  line-height: 12px;
 }
 </style>

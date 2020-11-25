@@ -33,5 +33,13 @@ export const actions: ActionTree<StateType, RootStateType> = {
     console.log(date)
     commit(reducers.SET_DATE, date)
     return date
+  },
+
+  selectEntry ({ commit }, entryId: string): void {
+    commit(reducers.SET_ENTRY, entryId)
+  },
+
+  cleanSelected({ commit }): void {
+    commit(reducers.CLEAN_SELECTED)
   }
 }

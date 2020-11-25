@@ -30,5 +30,23 @@ export const mutations: MutationTree<StateType> = {
     date: Date,
   ): void => {
     state.activeDate = new Date(date)
+  },
+
+  [reducers.SET_ENTRY]: (
+    state,
+    entryId: string
+  ): void => {
+    for (const entry of state.entries) {
+      if (entry.id === entryId) {
+        state.selectedEntry = entry
+        break
+      }
+    }
+  },
+
+  [reducers.CLEAN_SELECTED]: (
+    state,
+  ): void => {
+    state.selectedEntry = null
   }
 }

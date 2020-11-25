@@ -33,4 +33,5 @@ export interface StateType {
   entries: EntryType[]
   activeFilter: number
   activeDate: Date
+  selectedEntry: EntryType | null
 }

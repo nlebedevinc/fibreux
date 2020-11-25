@@ -4,4 +4,5 @@ export const state = (): StateType => ({
   'entries': [],
   'activeFilter': Filters.Month,
   'activeDate': new Date(),
+  'selectedEntry': null,
 })
