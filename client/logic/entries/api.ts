@@ -6,6 +6,11 @@ import * as tPromise from 'io-ts-promise'
 import { Entry, EntryType, Filters, PeriodType } from '~/logic/entries/types'
 import { calcPeriod } from '~/logic/utils'
 
+const prepareRequestHeaders = ($cookie: NuxtCookies) => ({
+  'Authorization': `Token ${$cookie.get('fibreux')}`,
+  'Content-Type': 'application/json',
+})
+
 const createRequestBody = (period: PeriodType): any => ([
   {
     'command': 'fibery.entity/query',
@@ -101,6 +106,29 @@ const methods = {
       return []
     }
   },
+
+  async loadInitData (
+    $axios: AxiosInstance,
+    $cookie: NuxtCookies,
+  ): Promise<void> {
+    const query = [{ 'command': 'fibery.schema/query' }]
+    const headers = prepareRequestHeaders($cookie)
+
+    let response
+    try {
+      response = await $axios.post('/api/commands', query, { headers })
+    } catch (error) {
+      console.error('error', error)
+    }
+
+    const [ data ] = response.data
+
+    if (data['success']) {
+      
+    }
+
+
+  }
 }
 
 export default methods
