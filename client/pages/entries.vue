@@ -41,19 +41,19 @@
             :key="entry.id"
           >
             <td>
-              <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.description">
+              <input v-if="entry.id === (selectedEntry && selectedEntry.id)" :value="selectedEntry.description">
               <span v-else>{{ entry.description }}</span>
             </td>
             <td>
-              <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.ticket">
+              <input v-if="entry.id === (selectedEntry && selectedEntry.id)" :value="selectedEntry.ticket">
               <span v-else>{{ entry.ticket }}</span>
             </td>
             <td>
-               <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.time">
+               <input v-if="entry.id === (selectedEntry && selectedEntry.id)" :value="selectedEntry.time">
               <span v-else>{{ entry.time }}</span>
             </td>
             <td>
-              <input v-if="entry.id === (selectedEntry &&selectedEntry.id)" :value="selectedEntry.when">
+              <input v-if="entry.id === (selectedEntry && selectedEntry.id)" :value="selectedEntry.when">
               <span v-else>{{ entry.when }}</span>
             </td>
             <td>
