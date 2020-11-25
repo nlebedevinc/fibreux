@@ -25,4 +25,5 @@ export type EntryType = ts.TypeOf<typeof Entry>
 export interface StateType {
   entries: EntryType[]
   activeFilter: number
+  activeDate: Date
 }

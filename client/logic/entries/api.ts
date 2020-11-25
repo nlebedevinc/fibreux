@@ -57,7 +57,7 @@ const createRequestBody = (): any => ([
             'q/desc'
           ]
         ],
-        'q/limit': 100,
+        'q/limit': 'q/no-limit',
         'q/offset': 0
       },
       'params': {
