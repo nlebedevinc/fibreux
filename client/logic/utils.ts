@@ -9,7 +9,6 @@ export function toPeriod(date: Date): string {
 }
 
 export function calcPeriod(date: Date, filter: number): PeriodType {
-  console.log('calc DATW', date)
   let from: Date;
   let to: Date;
   switch(filter) {
