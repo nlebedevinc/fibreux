@@ -12,11 +12,13 @@ export const actions: ActionTree<StateType, RootStateType> = {
     return list
   },
 
+  // login
   login ({ commit }, { token } ): void {
     this.$cookies.set('fibreux', token)
     this.$router.replace({'path': '/entries'})
   },
 
+  // logout
   logout ({ commit }): void {
     this.$cookies.remove('fibreux')
     this.$router.replace({'path': '/login'})

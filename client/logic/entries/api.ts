@@ -89,14 +89,12 @@ const methods = {
     payload: { date: Date, filter: number } = { date: new Date(), filter: Filters.Month },
   ): Promise<EntryType[]> {
     try {
-      console.log('CALC', payload, calcPeriod(payload.date, payload.filter))
       const token = $cookie.get('fibreux')
       const headers = { 'Authorization': `Token ${token}` }
       const body = createRequestBody(calcPeriod(payload.date, payload.filter))
 
       const response = await $axios.post('/api/commands', body, { headers })
       const result = parseResponse(response.data);
-      console.log(result)
 
       return tPromise.decode(ts.array(Entry), result)
     } catch (error) {
