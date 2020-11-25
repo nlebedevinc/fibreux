@@ -17,4 +17,18 @@ export const mutations: MutationTree<StateType> = {
 
     state.entries = updatedEntries
   },
+
+  [reducers.SET_FILTER]: (
+    state,
+    selected: number,
+  ): void => {
+    state.activeFilter = selected
+  },
+
+  [reducers.SET_DATE]: (
+    state,
+    date: Date,
+  ): void => {
+    state.activeDate = new Date(date)
+  }
 }

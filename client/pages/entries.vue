@@ -4,13 +4,18 @@
       <div :class="$style.rowt">
     <div :class="$style.navbar">
       <ul>
-        <li>Pagination here</li>
+        <li>
+          <pagination
+            :currentDate="currentDate"
+            :activeFilter="activeFilter"
+          />
+        </li>
         <li>Total</li>
       </ul>
-      <ul>
-        <li><button class="navbar-link">Day</button></li>
-        <li><button class="navbar-link">Week</button></li>
-        <li><button class="navbar-link">Month</button></li>
+      <ul v-on:click="onFilter">
+        <li><button :class="computedDay" id="1">Day</button></li>
+        <li><button :class="computedWeek" id="2">Week</button></li>
+        <li><button :class="computedMonth" id="3">Month</button></li>
       </ul>
     </div>
     <section
@@ -50,12 +55,16 @@ import Vue from 'vue'
 import { Store } from 'vuex'
 import { namespace } from 'vuex-class'
 
-import { StateType, EntryType } from '~/logic/entries/types'
+import Pagination from '~/components/Pagination.vue'
+import { StateType, EntryType, Filters } from '~/logic/entries/types'
 
 const entries = namespace('entries')
 
 @Component({
-  middleware: ['auth']
+  'components': {
+    Pagination,
+  },
+  'middleware': ['auth']
 })
 export default class Entries extends Vue {
   @entries.State('entries')
@@ -67,8 +76,37 @@ export default class Entries extends Vue {
   @entries.Getter('activeFilter')
   activeFilter!: number
 
+  @entries.Getter('currentDate')
+  currentDate!: Date
+
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
     return store.dispatch('entries/fetchEntries')
+  }
+
+  onFilter(event: Event): void {
+    if (event.target.nodeName !== 'BUTTON') {
+      return
+    }
+    this.$store.dispatch('entries/changeFilter', { selected: Number(event.target.id) })
+  }
+
+  get computedDay(): Readonly<Record<string, boolean>> {
+    return {
+      [this.$style['filter-active']]: this.activeFilter === Filters.Day,
+    }
+  }
+
+  get computedWeek(): Readonly<Record<string, boolean>> {
+    console.log('Computed callled')
+    return {
+      [this.$style['filter-active']]: this.activeFilter === Filters.Week,
+    }
+  }
+
+  get computedMonth(): Readonly<Record<string, boolean>> {
+    return {
+      [this.$style['filter-active']]: this.activeFilter === Filters.Month,
+    }
   }
 }
 </script>
@@ -115,5 +153,9 @@ ul li button   {
 
 .tablentry {
   border-top: 1px solid rgb(223, 223, 222)
+}
+
+.filter-active {
+  border: 1px solid red
 }
 </style>

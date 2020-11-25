@@ -9,6 +9,11 @@ export const getters: GetterTree<StateType, RootStateType> = {
   },
 
   activeFilter (state): number {
+    console.log('Getter was called')
     return Number(state.activeFilter)
+  },
+
+  currentDate (state): Date {
+    return state.activeDate
   }
 }

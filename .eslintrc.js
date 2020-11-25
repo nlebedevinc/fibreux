@@ -25,7 +25,8 @@ module.exports = {
     //   'groups': ['module', '/^~//', '/^@//'],
     //   'alphabetize': { 'order': 'asc', 'ignoreCase': false },
     // }],
-    'compat/compat': 0
+    'compat/compat': 0,
+    'vue-a11y/click-events-have-key-events': 0
   },
 
   'overrides': [],

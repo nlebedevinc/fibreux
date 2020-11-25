@@ -14,7 +14,7 @@ export const Entry = ts.type({
 })
 
 export enum Filters {
-  Day,
+  Day = 1,
   Week,
   Month,
 }

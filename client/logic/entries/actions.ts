@@ -13,13 +13,25 @@ export const actions: ActionTree<StateType, RootStateType> = {
     return list
   },
 
-  async login ({ commit }, { token } ): Promise<void> {
+  login ({ commit }, { token } ): void {
     this.$cookies.set('fibreux', token)
     this.$router.replace({'path': '/entries'})
   },
 
-  async logout({ commit }): Promise<void> {
+  logout ({ commit }): void {
     this.$cookies.remove('fibreux')
     this.$router.replace({'path': '/login'})
+  },
+
+  changeFilter ({ commit }, { selected }): number {
+    console.log('Change filter event', selected)
+    commit(reducers.SET_FILTER, selected)
+    return selected
+  },
+
+  changeDate ({ commit }, { date }): Date {
+    console.log(date)
+    commit(reducers.SET_DATE, date)
+    return date
   }
 }
