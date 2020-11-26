@@ -245,7 +245,6 @@ const methods = {
     if (result.success) {
       return { error: null }
     } else {
-      console.log(query)
       console.error('Failed to store user', result)
       return { error: 'Failed to store user' }
     }
@@ -261,11 +260,8 @@ const methods = {
   ): Promise<{ error: string | null }> {
     const { schemas, projectConfig, project } = payload.settings
     try {
-      console.log('PRE QUERY', payload)
       const query = prepareDeleteRecordQuery({ schemas, project, projectConfig, id: payload.record.id })
       const headers = prepareRequestHeaders($cookie)
-
-      console.log(JSON.stringify(query))
 
       const response = await $axios.post('/api/commands', query, { headers })
       const [result] = response.data
@@ -273,11 +269,9 @@ const methods = {
       if (result.success) {
         return { error: null }
       } else {
-        console.log(result)
         throw Error('Invalid response')
       }
     } catch (error) {
-      console.log(error)
       return { error: 'Failed to delete record' }
     }
   }
