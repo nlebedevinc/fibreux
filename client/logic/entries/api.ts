@@ -268,7 +268,8 @@ const methods = {
       console.log(JSON.stringify(query))
 
       const response = await $axios.post('/api/commands', query, { headers })
-      const result = response.data
+      const [result] = response.data
+
       if (result.success) {
         return { error: null }
       } else {
