@@ -64,7 +64,6 @@ export default class Index extends Vue {
     // Here we don't have a DI setup yet, so we use the explicit approach:
     // const typedStore = useStore<TypedStore>(store)
     // return typedStore.comments.fetchComments()
-    console.log('State', this.comments);
     return store.dispatch('comments/fetchComments', { 'nick': 'top' })
   }
 }

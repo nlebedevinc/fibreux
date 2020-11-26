@@ -4,7 +4,7 @@ import * as ts from 'io-ts'
 import * as tPromise from 'io-ts-promise'
 
 import { Entry, EntryType, Filters, PeriodType } from '~/logic/entries/types'
-import { calcPeriod } from '~/logic/utils'
+import { calcPeriod, prepareSpecialistsInvolvedQuery } from '~/logic/utils'
 
 const prepareRequestHeaders = ($cookie: NuxtCookies) => ({
   'Authorization': `Token ${$cookie.get('fibreux')}`,
@@ -80,6 +80,13 @@ const parseResponse = (data: any): any => {
   return data[0].result
 }
 
+export interface InitDataType {
+  settingSchemas: object
+  projectsConfig: object
+  project: string
+  error: string | null
+}
+
 const methods = {
   /**
    * Fetches comments from the remote API.
@@ -110,24 +117,33 @@ const methods = {
   async loadInitData (
     $axios: AxiosInstance,
     $cookie: NuxtCookies,
-  ): Promise<void> {
+  ): Promise<Partial<InitDataType>> {
     const query = [{ 'command': 'fibery.schema/query' }]
     const headers = prepareRequestHeaders($cookie)
 
     let response
     try {
       response = await $axios.post('/api/commands', query, { headers })
+      const [ data ] = response.data
+
+      if (data['success']) {
+        const { query: specialistQuery, parse } = prepareSpecialistsInvolvedQuery(data['result'])
+
+        response = await $axios.post('/api/commands', specialistQuery, { headers })
+
+        const parsed = parse(response.data)
+
+        const projects = Object.keys(parsed)
+        const [project] = projects
+
+        return { settingSchemas: data['result'], projectsConfig: parsed, project, error: null }
+      } else {
+        return { error: 'Failed to fetch initial commands' }
+      }
     } catch (error) {
-      console.error('error', error)
+      console.error(error)
+      return { error: 'Initial data fetch error' }
     }
-
-    const [ data ] = response.data
-
-    if (data['success']) {
-      
-    }
-
-
   }
 }
 

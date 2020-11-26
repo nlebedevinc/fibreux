@@ -80,23 +80,23 @@ export const prepareSpecialistsInvolvedQuery = (schemas) => {
 
   const getPartner = (fields) => {
     const found = fields.find(v => v['fibery/name'].endsWith('Employee Partner Company'));
-    return found && found[['fibery/name']]
+    return found && found['fibery/name'];
   };
 
   const getName = (fields) => {
     const found = fields.find(v => /name$/i.test(v['fibery/name']));
-    return found && found[['fibery/name']]
+    return found && found['fibery/name'];
   };
 
   const getTeam = (fields) => {
     const found = fields.find(v => v['fibery/name'].includes('Team'));
-    return found && found[['fibery/name']]
+    return found && found['fibery/name'];
   };
 
-  const query = []
-  const mappings = []
+  const query: Array<{ command: string, args: object }> = [];
+  const mappings: Array<{ project: string, fields: object }> = [];
   for (const collection of specialistCollections) {
-    const [projectName] = collection.split('/')
+    const [projectName] = (collection as string).split('/');
 
     if (projectName === 'Time Tracking App Template') {
       continue;
@@ -128,7 +128,6 @@ export const prepareSpecialistsInvolvedQuery = (schemas) => {
         },
       },
     });
-
   }
 
   return { query, parse: parseSpecialistsInvolvedQueryResult(mappings) };

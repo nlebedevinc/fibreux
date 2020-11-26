@@ -15,6 +15,8 @@ export const actions: ActionTree<StateType, RootStateType> = {
   // login
   login ({ commit }, { token } ): void {
     this.$cookies.set('fibreux', token)
+
+    // dispatch
     this.$router.replace({'path': '/entries'})
   },
 

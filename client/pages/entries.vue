@@ -13,10 +13,10 @@
         <li>Total</li>
       </ul>
       <div>
-        <ul v-on:click="onFilter">
-          <li><button :class="computedDay" id="1">Day</button></li>
-          <li><button :class="computedWeek" id="2">Week</button></li>
-          <li><button :class="computedMonth" id="3">Month</button></li>
+        <ul>
+          <li><button :class="computedDay" @click="onFilter(1)">Day</button></li>
+          <li><button :class="computedWeek" @click="onFilter(2)">Week</button></li>
+          <li><button :class="computedMonth" @click="onFilter(3)">Month</button></li>
         </ul>
         <button @click="onNew">New</button>
       </div>
@@ -123,16 +123,16 @@ export default class Entries extends Vue {
     return store.dispatch('entries/fetchEntries')
   }
 
-  onFilter(event: Event): void {
-    if (event.target.nodeName !== 'BUTTON') {
+  onFilter(filter: number): void {
+    if (this.activeFilter === filter) {
       return
     }
-    this.$store.dispatch('entries/changeFilter', { selected: Number(event.target.id) })
+    this.$store.dispatch('entries/changeFilter', { selected: Number(filter) })
 
-    this.$store.dispatch('entries/fetchEntries', { date: this.currentDate, filter: Number(event.target.id) })
+    this.$store.dispatch('entries/fetchEntries', { date: this.currentDate, filter: Number(filter) })
   }
 
-  onEntrySelect(entryId: string): void {
+  onEntrySelect(entryId: string | null): void {
     this.$store.dispatch('entries/selectEntry', entryId)
   }
 
