@@ -14,9 +14,9 @@
       </ul>
       <div>
         <ul>
-          <li><button :class="computedDay" @click="onFilter(1)">Day</button></li>
-          <li><button :class="computedWeek" @click="onFilter(2)">Week</button></li>
-          <li><button :class="computedMonth" @click="onFilter(3)">Month</button></li>
+          <li><el-button :class="computedDay" @click="onFilter(1)">Day</el-button></li>
+          <li><el-button :class="computedWeek" @click="onFilter(2)">Week</el-button></li>
+          <li><el-button :class="computedMonth" @click="onFilter(3)">Month</el-button></li>
         </ul>
         <button @click="onNew">New</button>
       </div>
@@ -94,12 +94,14 @@ import { namespace } from 'vuex-class'
 
 import Pagination from '~/components/Pagination.vue'
 import { StateType, EntryType, Filters, SettingsType } from '~/logic/entries/types'
+import { Button } from 'element-ui'
 
 const entries = namespace('entries')
 
 @Component({
   'components': {
     Pagination,
+    Button,
   },
   'middleware': ['auth']
 })
