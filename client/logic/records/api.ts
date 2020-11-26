@@ -18,8 +18,6 @@ const methods = {
   ): Promise<RawCommentType[]> {
     // Note, that $axios has some custom methods, that are not used on purpose
     // https://github.com/nuxt-community/axios-module#-features
-    console.log(payload)
-
     const response = await $axios.get('comments')
     return tPromise.decode(ts.array(RawComment), response.data)
   },
