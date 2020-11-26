@@ -12,12 +12,17 @@ export const actions: ActionTree<StateType, RootStateType> = {
     return list
   },
 
-  // login
-  async login ({ dispatch }, { token } ): Promise<void> {
-    this.$cookies.set('fibreux', token)
-    await dispatch('initialData')
+  // settings
+  setSettingsSchemas ({ commit }, schemas): void {
+    commit(reducers.SET_SETTINGS_SCHEMAS, schemas)
+  },
 
-    this.$router.replace({'path': '/entries'})
+  setProjectConfig ({ commit }, projectConfig): void {
+    commit(reducers.SET_PROJECT_CONFIG, projectConfig)
+  },
+
+  setProjectId ({ commit }, project): void {
+    commit(reducers.SET_PROJECT_ID, project)
   },
 
   async initialData ({ dispatch }): Promise<void> {
@@ -31,9 +36,18 @@ export const actions: ActionTree<StateType, RootStateType> = {
       dispatch('setProjectConfig', options.projectsConfig)
     }
 
+    console.log('PROJECT', options.project)
     if (options.project) {
       dispatch('setProjectId', options.project)
     }
+  },
+
+  // login
+  async login ({ dispatch }, { token } ): Promise<void> {
+    this.$cookies.set('fibreux', token)
+    await dispatch('initialData')
+
+    this.$router.replace({'path': '/entries'})
   },
 
   // logout
@@ -62,19 +76,6 @@ export const actions: ActionTree<StateType, RootStateType> = {
 
   create ({ commit }): void {
     commit(reducers.CREATE_ENTRY)
-  },
-
-  // settings
-  setSettingsSchemas ({ commit }, schemas): void {
-    commit(reducers.SET_SETTINGS_SCHEMAS, schemas)
-  },
-
-  setProjectConfig ({ commit }, projectConfig): void {
-    commit(reducers.SET_PROJECT_CONFIG, projectConfig)
-  },
-
-  setProjectId ({ commit }, project): void {
-    commit(reducers.SET_PROJECT_CONFIG, project)
   },
 
   // store entry

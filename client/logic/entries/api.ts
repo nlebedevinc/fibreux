@@ -177,6 +177,8 @@ const methods = {
     } else {
       const { specialist, team, project, partner } = settings
 
+      console.log('SETTINGS', settings)
+
       query = [
         {
           'command': 'fibery.entity/create',

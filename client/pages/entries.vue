@@ -123,7 +123,7 @@ export default class Entries extends Vue {
   settings!: SettingsType
 
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
-    store.dispatch('initialData')
+    // store.dispatch('entries/initialData')
     return store.dispatch('entries/fetchEntries')
   }
 
