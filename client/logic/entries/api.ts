@@ -11,6 +11,38 @@ const prepareRequestHeaders = ($cookie: NuxtCookies) => ({
   'Content-Type': 'application/json',
 })
 
+export const prepareDeleteRecordQuery = ({ schemas, id, projectConfig, project }): any => {
+  const types = schemas['fibery/types'].filter(s => s['fibery/name'].toString().endsWith('Time Entry') && s['fibery/name'].split('/').length === 2);
+  const collections = Array.from(new Set(types.map(v => v['fibery/name'])));
+
+  for (const collection of collections) {
+    const [projectName] = (collection as string).split('/');
+
+    if (project !== projectName) {
+      continue;
+    }
+
+    const { collections } = projectConfig[projectName];
+    const idField = 'fibery/id';
+
+    if (!id) {
+      throw new Error('prepareDeleteRecordQuery can not find ID value');
+    }
+
+    const entity = { [idField]: id };
+
+    return [
+      {
+        'command': 'fibery.entity/delete',
+        'args': {
+          'type': collections.timeEntries,
+          'entity': entity
+        },
+      },
+    ]
+  }
+}
+
 const createRequestBody = (period: PeriodType): any => ([
   {
     'command': 'fibery.entity/query',
@@ -177,8 +209,6 @@ const methods = {
     } else {
       const { specialist, team, project, partner } = settings
 
-      console.log('SETTINGS', settings)
-
       query = [
         {
           'command': 'fibery.entity/create',
@@ -218,6 +248,36 @@ const methods = {
       console.log(query)
       console.error('Failed to store user', result)
       return { error: 'Failed to store user' }
+    }
+  },
+
+  async deleteRecord (
+    $axios: AxiosInstance,
+    $cookie: NuxtCookies,
+    payload: {
+      record: EntryType
+      settings: SettingsType
+    }
+  ): Promise<{ error: string | null }> {
+    const { schemas, projectConfig, project } = payload.settings
+    try {
+      console.log('PRE QUERY', payload)
+      const query = prepareDeleteRecordQuery({ schemas, project, projectConfig, id: payload.record.id })
+      const headers = prepareRequestHeaders($cookie)
+
+      console.log(JSON.stringify(query))
+
+      const response = await $axios.post('/api/commands', query, { headers })
+      const result = response.data
+      if (result.success) {
+        return { error: null }
+      } else {
+        console.log(result)
+        throw Error('Invalid response')
+      }
+    } catch (error) {
+      console.log(error)
+      return { error: 'Failed to delete record' }
     }
   }
 

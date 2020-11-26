@@ -39,12 +39,13 @@ export const parseSpecialistsInvolvedQueryResult = (mappings) => (response) => {
   const parsed = {};
 
   for (let i = 0; i < mappings.length; i++) {
-    const { project, fields } = mappings[i];
-    const { success, result } = response[i];
+    const { specialists, timeEntries } = mappings[i].collections
+    const { project, fields } = mappings[i]
+    const { success, result } = response[i]
     const [item] = result;
 
     if (!success) {
-      console.error('command error: parseSpecialistsInvolvedQueryResult', item);
+      console.error('command error: parseSpecialistsInvolvedQueryResult', item)
       continue;
     }
 
@@ -53,30 +54,37 @@ export const parseSpecialistsInvolvedQueryResult = (mappings) => (response) => {
     }
 
     if (result.length > 1) {
-      console.error('more that 1 record: parseSpecialistsInvolvedQueryResult', item);
+      console.error('more that 1 record: parseSpecialistsInvolvedQueryResult', item)
       continue;
     }
 
     parsed[project] = {
       specialist: item[fields.id],
       name: item[fields.name],
+      collections: {
+        specialists: specialists.find(s => s.startsWith(project)),
+        timeEntries: timeEntries.find(s => s.startsWith(project)),
+      },
     };
 
     if (fields.partner && item[fields.partner]) {
-      parsed[project].partner = item[fields.partner]['fibery/id'];
+      parsed[project].partner = item[fields.partner]['fibery/id']
     }
 
     if (fields.team && item[fields.team]) {
-      parsed[project].team = item[fields.team]['fibery/id'];
+      parsed[project].team = item[fields.team]['fibery/id']
     }
   }
 
-  return parsed;
+  return parsed
 }
 
 export const prepareSpecialistsInvolvedQuery = (schemas) => {
   const specialistTypes = schemas['fibery/types'].filter(s => s['fibery/name'].toString().endsWith('Specialist') && !s['fibery/name'].toString().includes('_'));
   const specialistCollections = Array.from(new Set(specialistTypes.map(v => v['fibery/name'])));
+
+  const timeEntriesTypes = schemas['fibery/types'].filter(s => s['fibery/name'].toString().endsWith('Time Entry') && s['fibery/name'].split('/').length === 2);
+  const timeEntriesCollections = Array.from(new Set(timeEntriesTypes.map(v => v['fibery/name'])));
 
   const getPartner = (fields) => {
     const found = fields.find(v => v['fibery/name'].endsWith('Employee Partner Company'));
@@ -94,7 +102,7 @@ export const prepareSpecialistsInvolvedQuery = (schemas) => {
   };
 
   const query: Array<{ command: string, args: object }> = [];
-  const mappings: Array<{ project: string, fields: object }> = [];
+  const mappings: Array<{ project: string, fields: object, collections: object }> = [];
   for (const collection of specialistCollections) {
     const [projectName] = (collection as string).split('/');
 
@@ -114,7 +122,7 @@ export const prepareSpecialistsInvolvedQuery = (schemas) => {
     partner && select.push(Object.defineProperty({}, partner, { enumerable: true, value: ['fibery/id', 'enum/name'] }));
     team && select.push(Object.defineProperty({}, team, { enumerable: true, value: ['fibery/id', 'enum/name'] }));
 
-    mappings.push({ project: projectName, fields: { id, name, partner, team } });
+    mappings.push({ project: projectName, fields: { id, name, partner, team }, collections: { specialists: specialistCollections, timeEntries: timeEntriesCollections } });
 
     query.push({
       command: 'fibery.entity/query',
@@ -127,7 +135,7 @@ export const prepareSpecialistsInvolvedQuery = (schemas) => {
           'q/offset': 0,
         },
       },
-    })
+    });
   }
 
   return { query, parse: parseSpecialistsInvolvedQueryResult(mappings) }

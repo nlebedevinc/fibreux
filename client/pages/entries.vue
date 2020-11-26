@@ -65,7 +65,7 @@
                   <button @click="onEntrySelect(entry.id)">Edit</button>
                 </li>
                 <li>
-                  <button>Delete</button>
+                  <button @click="onEntryDelete(entry)">Delete</button>
                 </li>
               </ul>
               <ul v-else>
@@ -151,6 +151,10 @@ export default class Entries extends Vue {
 
   onSave(entry): void {
     this.$store.dispatch('entries/saveEntry', { record: entry, settings: this.settings, date: this.currentDate, filter: this.activeFilter })
+  }
+
+  onEntryDelete(entry): void {
+    this.$store.dispatch('entries/deleteRecord', { record: entry, settings: this.settings, date: this.currentDate, filter: this.activeFilter })
   }
 
   updateValue(event): void {
