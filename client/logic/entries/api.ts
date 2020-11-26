@@ -213,7 +213,8 @@ const methods = {
     if (result.success) {
       return { error: null }
     } else {
-      console.error('Failed to store user')
+      console.log(query)
+      console.error('Failed to store user', result)
       return { error: 'Failed to store user' }
     }
   }

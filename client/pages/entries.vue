@@ -45,15 +45,15 @@
               <span v-else>{{ entry.description }}</span>
             </td>
             <td>
-              <input id="ticket" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.ticket">
+              <input id="ticket" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.ticket" @input="updateValue">
               <span v-else>{{ entry.ticket }}</span>
             </td>
             <td>
-               <input id="time" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.time">
+               <input id="time" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.time" @input="updateValue">
               <span v-else>{{ entry.time }}</span>
             </td>
             <td>
-              <input id="when" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.when">
+              <input id="when" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.when" @input="updateValue">
               <span v-else>{{ entry.when }}</span>
             </td>
             <td>
@@ -123,6 +123,7 @@ export default class Entries extends Vue {
   settings!: SettingsType
 
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
+    store.dispatch('initialData')
     return store.dispatch('entries/fetchEntries')
   }
 

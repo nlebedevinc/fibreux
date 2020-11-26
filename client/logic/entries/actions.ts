@@ -15,6 +15,12 @@ export const actions: ActionTree<StateType, RootStateType> = {
   // login
   async login ({ dispatch }, { token } ): Promise<void> {
     this.$cookies.set('fibreux', token)
+    await dispatch('initialData')
+
+    this.$router.replace({'path': '/entries'})
+  },
+
+  async initialData ({ dispatch }): Promise<void> {
     const options = await entries.loadInitData(this.$axios, this.$cookies)
 
     if (options.settingSchemas) {
@@ -28,8 +34,6 @@ export const actions: ActionTree<StateType, RootStateType> = {
     if (options.project) {
       dispatch('setProjectId', options.project)
     }
-
-    this.$router.replace({'path': '/entries'})
   },
 
   // logout
