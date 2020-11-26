@@ -13,10 +13,22 @@ export const actions: ActionTree<StateType, RootStateType> = {
   },
 
   // login
-  login ({ commit }, { token } ): void {
+  async login ({ dispatch }, { token } ): Promise<void> {
     this.$cookies.set('fibreux', token)
+    const options = await entries.loadInitData(this.$axios, this.$cookies)
 
-    // dispatch
+    if (options.settingSchemas) {
+      dispatch('entries/setSettingsSchemas', options.settingSchemas)
+    }
+
+    if (options.projectsConfig) {
+      dispatch('entries/setProjectConfig', options.projectsConfig)
+    }
+
+    if (options.project) {
+      dispatch('entries/setProjectId', options.project)
+    }
+
     this.$router.replace({'path': '/entries'})
   },
 
@@ -44,7 +56,20 @@ export const actions: ActionTree<StateType, RootStateType> = {
     commit(reducers.CLEAN_SELECTED)
   },
 
-  create({ commit }): void {
+  create ({ commit }): void {
     commit(reducers.CREATE_ENTRY)
+  },
+
+  // settings
+  setSettingsSchemas ({ commit }, schemas): void {
+    commit(reducers.SET_SETTINGS_SCHEMAS, schemas)
+  },
+
+  setProjectConfig ({ commit }, projectConfig): void {
+    commit(reducers.SET_PROJECT_CONFIG, projectConfig)
+  },
+
+  setProjectId ({ commit }, project): void {
+    commit(reducers.SET_PROJECT_CONFIG, project)
   }
 }

@@ -29,9 +29,23 @@ export type PeriodType = ts.TypeOf<typeof Period>
 // Static TypeScript type, that can be used as a regular `type`:
 export type EntryType = ts.TypeOf<typeof Entry>
 
+export interface ProjectType {
+  id: string
+  name: string
+}
+export interface SettingsType {
+  team: string,
+  specialist: string,
+  partner: string,
+  project: string,
+  projectConfig: any,
+  schemas: any,
+}
+
 export interface StateType {
   entries: EntryType[]
   activeFilter: number
   activeDate: Date
   selectedEntry: EntryType | null
+  settings: SettingsType
 }

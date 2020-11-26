@@ -5,4 +5,12 @@ export const state = (): StateType => ({
   'activeFilter': Filters.Month,
   'activeDate': new Date(),
   'selectedEntry': null,
+  'settings': {
+    team: '',
+    specialist: '',
+    partner: '',
+    project: '',
+    projectConfig: null,
+    schemas: null,
+  }
 })

@@ -1,3 +1,4 @@
+import { any } from 'io-ts'
 import { MutationTree } from 'vuex'
 
 import * as reducers from '~/logic/entries/reducers'
@@ -69,5 +70,40 @@ export const mutations: MutationTree<StateType> = {
 
     state.entries.push(entry)
     state.selectedEntry = entry
+  },
+
+  [reducers.SET_SETTINGS_SCHEMAS]: (
+    state,
+    schemas: any,
+  ): void => {
+    state.settings = {
+      ...state.settings,
+      schemas,
+    }
+  },
+
+  [reducers.SET_PROJECT_CONFIG]: (
+    state,
+    projectConfig: any,
+  ): void => {
+    state.settings = {
+      ...state.settings,
+      projectConfig,
+    }
+  },
+
+  [reducers.SET_PROJECT_ID]: (
+    state,
+    project,
+  ): void => {
+    const { team, specialist, partner } = state.settings.projectConfig[project]
+
+    state.settings = {
+      ...state.settings,
+      project,
+      team,
+      specialist,
+      partner,
+    }
   }
 }
