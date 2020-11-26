@@ -15,7 +15,7 @@ export const mutations: MutationTree<StateType> = {
       entry.description = entry.description || ''
       entry.ticket = entry.ticket || ''
       entry.time = entry.time || ''
-      entry.when = entry.time || ''
+      entry.when = entry.when || ''
       updatedEntries.push(entry)
     }
 
@@ -108,5 +108,15 @@ export const mutations: MutationTree<StateType> = {
       specialist,
       partner,
     }
+  },
+
+  [reducers.UPDATE_PROPERTY]: (
+    state,
+    { field, value }
+  ): void => {
+    state.selectedEntry = {
+      ...state.selectedEntry,
+      [field]: value,
+    } as EntryType
   }
 }

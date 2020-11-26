@@ -80,6 +80,12 @@ export const actions: ActionTree<StateType, RootStateType> = {
 
     if (!result.error) {
       dispatch('fetchEntries', { date, filter })
+      dispatch('cleanSelected')
     }
+  },
+
+  // update
+  updateProperty ({ commit }, options): void {
+    commit(reducers.UPDATE_PROPERTY, options)
   }
 }

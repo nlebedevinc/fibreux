@@ -41,19 +41,19 @@
             :key="entry.id"
           >
             <td>
-              <input v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.description">
+              <input id="description" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.description" @input="updateValue">
               <span v-else>{{ entry.description }}</span>
             </td>
             <td>
-              <input v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.ticket">
+              <input id="ticket" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.ticket">
               <span v-else>{{ entry.ticket }}</span>
             </td>
             <td>
-               <input v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.time">
+               <input id="time" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.time">
               <span v-else>{{ entry.time }}</span>
             </td>
             <td>
-              <input v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.when">
+              <input id="when" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.when">
               <span v-else>{{ entry.when }}</span>
             </td>
             <td>
@@ -70,7 +70,7 @@
               </ul>
               <ul v-else>
                 <li>
-                  <button>Save</button>
+                  <button @click="onSave(selectedEntry)">Save</button>
                 </li>
                 <li>
                   <button @click="cleanSelected">Cancel</button>
@@ -151,6 +151,13 @@ export default class Entries extends Vue {
 
   onSave(entry): void {
     this.$store.dispatch('entries/saveEntry', { record: entry, settings: this.settings, date: this.currentDate, filter: this.activeFilter })
+  }
+
+  updateValue(event): void {
+    const field = event.target.id
+    const value = event.target.value
+
+    this.$store.dispatch('entries/updateProperty', { field, value })
   }
 
   get computedDay(): Readonly<Record<string, boolean>> {
