@@ -1,4 +1,3 @@
-import { any } from 'io-ts'
 import { MutationTree } from 'vuex'
 
 import * as reducers from '~/logic/entries/reducers'
@@ -13,6 +12,10 @@ export const mutations: MutationTree<StateType> = {
     const updatedEntries: EntryType[] = []
 
     for (const entry of entries) {
+      entry.description = entry.description || ''
+      entry.ticket = entry.ticket || ''
+      entry.time = entry.time || ''
+      entry.when = entry.time || ''
       updatedEntries.push(entry)
     }
 

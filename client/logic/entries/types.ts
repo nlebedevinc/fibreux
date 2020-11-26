@@ -2,6 +2,12 @@
 
 import * as ts from 'io-ts'
 
+export interface TimeType {
+  hours: number
+  minutes: number
+  seconds: number
+}
+
 // Runtime type, that can be used for schema validation:
 export const Entry = ts.type({
   'id': ts.union([ts.string, ts.null]),
@@ -28,6 +34,16 @@ export type PeriodType = ts.TypeOf<typeof Period>
 
 // Static TypeScript type, that can be used as a regular `type`:
 export type EntryType = ts.TypeOf<typeof Entry>
+
+// export interface EntryType {
+//   'id': string | null
+//   'description': string | null
+//   'person': string
+//   'when': string | null,
+//   'time': TimeType,
+//   'ticket': string | null,
+//   'project': string,
+// }
 
 export interface ProjectType {
   id: string

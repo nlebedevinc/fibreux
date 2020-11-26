@@ -93,7 +93,7 @@ import { Store } from 'vuex'
 import { namespace } from 'vuex-class'
 
 import Pagination from '~/components/Pagination.vue'
-import { StateType, EntryType, Filters } from '~/logic/entries/types'
+import { StateType, EntryType, Filters, SettingsType } from '~/logic/entries/types'
 
 const entries = namespace('entries')
 
@@ -118,6 +118,9 @@ export default class Entries extends Vue {
 
   @entries.Getter('selectedEntry')
   selectedEntry!: EntryType
+
+  @entries.Getter('currentSettings')
+  settings!: SettingsType
 
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
     return store.dispatch('entries/fetchEntries')
@@ -144,6 +147,10 @@ export default class Entries extends Vue {
     if (!this.selectedEntry) {
       this.$store.dispatch('entries/create')
     }
+  }
+
+  onSave(entry): void {
+    this.$store.dispatch('entries/saveEntry', { record: entry, settings: this.settings, date: this.currentDate, filter: this.activeFilter })
   }
 
   get computedDay(): Readonly<Record<string, boolean>> {

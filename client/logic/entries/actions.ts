@@ -18,15 +18,15 @@ export const actions: ActionTree<StateType, RootStateType> = {
     const options = await entries.loadInitData(this.$axios, this.$cookies)
 
     if (options.settingSchemas) {
-      dispatch('entries/setSettingsSchemas', options.settingSchemas)
+      dispatch('setSettingsSchemas', options.settingSchemas)
     }
 
     if (options.projectsConfig) {
-      dispatch('entries/setProjectConfig', options.projectsConfig)
+      dispatch('setProjectConfig', options.projectsConfig)
     }
 
     if (options.project) {
-      dispatch('entries/setProjectId', options.project)
+      dispatch('setProjectId', options.project)
     }
 
     this.$router.replace({'path': '/entries'})
@@ -71,5 +71,15 @@ export const actions: ActionTree<StateType, RootStateType> = {
 
   setProjectId ({ commit }, project): void {
     commit(reducers.SET_PROJECT_CONFIG, project)
+  },
+
+  // store entry
+  async saveEntry ({ dispatch }, payload): Promise<void> {
+    const { filter, date, settings, record } = payload
+    const result = await entries.saveRecord(this.$axios, this.$cookies, { record, settings })
+
+    if (!result.error) {
+      dispatch('fetchEntries', { date, filter })
+    }
   }
 }

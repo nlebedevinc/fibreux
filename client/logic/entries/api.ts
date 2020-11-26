@@ -3,7 +3,7 @@ import { NuxtCookies } from 'cookie-universal-nuxt'
 import * as ts from 'io-ts'
 import * as tPromise from 'io-ts-promise'
 
-import { Entry, EntryType, Filters, PeriodType } from '~/logic/entries/types'
+import { Entry, EntryType, Filters, PeriodType, SettingsType } from '~/logic/entries/types'
 import { calcPeriod, prepareSpecialistsInvolvedQuery } from '~/logic/utils'
 
 const prepareRequestHeaders = ($cookie: NuxtCookies) => ({
@@ -144,7 +144,80 @@ const methods = {
       console.error(error)
       return { error: 'Initial data fetch error' }
     }
+  },
+
+  async saveRecord(
+    $axios: AxiosInstance,
+    $cookie: NuxtCookies,
+    payload: {
+      record: EntryType
+      settings: SettingsType
+    }
+  ): Promise<{error: string | null}> {
+    let query
+
+    const { record: { id, ticket, time, when, description }, settings } = payload
+
+    if (id) {
+      query = [
+        {
+          'command': 'fibery.entity/update',
+          'args': {
+            'type': 'Pluto TV/Time Entry',
+            'entity': {
+              'fibery/id': id,
+              'Pluto TV/Ticket Ref': ticket,
+              'Pluto TV/Time Spent': time,
+              'Pluto TV/When': when,
+              'Pluto TV/name': description,
+            },
+          },
+        },
+      ]
+    } else {
+      const { specialist, team, project, partner } = settings
+
+      query = [
+        {
+          'command': 'fibery.entity/create',
+          'args': {
+            'type': 'Pluto TV/Time Entry',
+            'entity': {
+              'Pluto TV/Ticket Ref': ticket,
+              'Pluto TV/Project Name': project,
+              'Pluto TV/Specialist Name': specialist,
+              'Pluto TV/Time Spent': time,
+              // Fix this
+              'Pluto TV/Meeting Time': ticket!.toString().startsWith('meet') ? '1' : '0',
+              'user/Pluto TV Specialist': {
+                'fibery/id': specialist,
+              },
+              'Pluto TV/When': when,
+              'user/Pluto TV Team': {
+                'fibery/id': team,
+              },
+              'Pluto TV/Employee Partner Company': (partner && partner !== 'direct') ? {
+                'fibery/id': team,
+              } : null,
+              'Pluto TV/name': description,
+            },
+          },
+        },
+      ]
+    }
+
+    const headers = prepareRequestHeaders($cookie)
+    const response = await $axios.post('/api/commands', query, { headers })
+
+    const [ result ] = response.data
+    if (result.success) {
+      return { error: null }
+    } else {
+      console.error('Failed to store user')
+      return { error: 'Failed to store user' }
+    }
   }
+
 }
 
 export default methods

@@ -127,8 +127,52 @@ export const prepareSpecialistsInvolvedQuery = (schemas) => {
           'q/offset': 0,
         },
       },
-    });
+    })
   }
 
-  return { query, parse: parseSpecialistsInvolvedQueryResult(mappings) };
-};
+  return { query, parse: parseSpecialistsInvolvedQueryResult(mappings) }
+}
+
+// time
+
+// export function floatToTime(floatTime: string | number) {
+//   let decimalTime = Number.parseFloat(floatTime);
+//   decimalTime = decimalTime * 60 * 60;
+
+//   let hours = Math.floor((decimalTime / (60 * 60)));
+//   decimalTime = decimalTime - (hours * 60 * 60);
+
+//   let minutes = Math.floor((decimalTime / 60));
+//   decimalTime = decimalTime - (minutes * 60);
+
+//   let seconds = Math.round(decimalTime);
+
+//   if (hours < 10) {
+//     hours = '0' + hours;
+//   }
+
+//   if (minutes < 10) {
+//     minutes = '0' + minutes;
+//   }
+
+//   if (seconds < 10) {
+//     seconds = '0' + seconds;
+//   }
+
+//   return {
+//     hours,
+//     minutes,
+//     seconds,
+//   };
+// }
+
+export function timeToFloat(time: string): number {
+  const [hours, minutes = 0, seconds = 0] = time.split(':').map(value => Number.parseInt(value));
+  const value = hours + (minutes / 60) + (seconds / 3600);
+
+  if (value <= 0 || Number.isNaN(hours) || Number.isNaN(minutes) || Number.isNaN(seconds)) {
+    throw new Error(`Wrong time format for value ${time}`);
+  }
+
+  return value;
+}
