@@ -57,7 +57,7 @@
               <span v-else>{{ entry.when }}</span>
             </td>
             <td>
-              <ul v-if="!selectedEntry">
+              <ul v-if="!selectedEntry || selectedEntry.id !== entry.id">
                 <li>
                   <button>Copy</button>
                 </li>
