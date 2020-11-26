@@ -123,8 +123,7 @@ export default class Entries extends Vue {
   settings!: SettingsType
 
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
-    store.dispatch('entries/initialData')
-    return store.dispatch('entries/fetchEntries')
+    return store.dispatch('entries/loadDataAndEntries')
   }
 
   onFilter(filter: number): void {

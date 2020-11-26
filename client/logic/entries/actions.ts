@@ -25,6 +25,13 @@ export const actions: ActionTree<StateType, RootStateType> = {
     commit(reducers.SET_PROJECT_ID, project)
   },
 
+  async loadDataAndEntries ({ dispatch }, payload) : Promise<EntryType> {
+    const list = await dispatch('fetchEntries', payload)
+    await dispatch('initialData')
+
+    return list
+  },
+
   async initialData ({ dispatch }): Promise<void> {
     const options = await entries.loadInitData(this.$axios, this.$cookies)
 
