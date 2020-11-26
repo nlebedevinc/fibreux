@@ -104,9 +104,7 @@ export const actions: ActionTree<StateType, RootStateType> = {
   // delete
   async deleteRecord ({ dispatch }, payload): Promise<void> {
     const { filter, date, settings, record } = payload
-    console.log(payload)
     const result = await entries.deleteRecord(this.$axios, this.$cookies, { settings, record })
-    console.log(result)
 
     if (!result.error) {
       dispatch('fetchEntries', { date, filter })
