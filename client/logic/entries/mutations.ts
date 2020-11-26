@@ -60,15 +60,16 @@ export const mutations: MutationTree<StateType> = {
 
   [reducers.CREATE_ENTRY]: (
     state,
+    payload,
   ): void => {
     const entry: EntryType = {
       'id': null,
-      'description': '',
-      'person': '',
-      'project': '',
-      'ticket': '',
-      'time': '',
-      'when': '',
+      'description': (payload && payload.description) || '',
+      'person': (payload && payload.person) || '',
+      'project': (payload && payload.project) || '',
+      'ticket': (payload && payload.ticket) || '',
+      'time': (payload && payload.time) || '',
+      'when': (payload && payload.when) || '',
     }
 
     state.entries.push(entry)

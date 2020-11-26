@@ -81,8 +81,8 @@ export const actions: ActionTree<StateType, RootStateType> = {
     commit(reducers.CLEAN_SELECTED)
   },
 
-  create ({ commit }): void {
-    commit(reducers.CREATE_ENTRY)
+  create ({ commit }, entry): void {
+    commit(reducers.CREATE_ENTRY, entry)
   },
 
   // store entry

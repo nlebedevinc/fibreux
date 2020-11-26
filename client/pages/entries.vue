@@ -59,7 +59,7 @@
             <td>
               <ul v-if="!selectedEntry || selectedEntry.id !== entry.id">
                 <li>
-                  <button>Copy</button>
+                  <button @click="onCopy(entry)">Copy</button>
                 </li>
                 <li>
                   <button @click="onEntrySelect(entry.id)">Edit</button>
@@ -146,6 +146,12 @@ export default class Entries extends Vue {
   onNew(): void {
     if (!this.selectedEntry) {
       this.$store.dispatch('entries/create')
+    }
+  }
+
+  onCopy(entry: EntryType): void {
+    if (!this.selectedEntry) {
+      this.$store.dispatch('entries/create', entry)
     }
   }
 
