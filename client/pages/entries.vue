@@ -104,13 +104,17 @@
           </template>
           <template slot-scope="scope">
             <div v-if="!selectedEntry || selectedEntry.id !== scope.row.id">
-              <el-button size="mini" @click="onCopy(scope.row)">Copy</el-button>
-              <el-button size="mini" @click="onEntrySelect(scope.row.id)">Edit</el-button>
-              <el-button size="mini" type="danger" @click="onEntryDelete(scope.row)">Delete</el-button>
+              <el-button-group>
+                <el-button size="mini" icon="el-icon-edit" @click="onEntrySelect(scope.row.id)"/>
+                <el-button size="mini" icon="el-icon-document-copy" @click="onCopy(scope.row)"/>
+                <el-button size="mini" icon="el-icon-delete" type="danger" @click="onEntryDelete(scope.row)"/>
+              </el-button-group>
             </div>
             <div v-else>
-              <el-button size="mini" @click="onSave(selectedEntry)">Save</el-button>
-              <el-button size="mini" @click="cleanSelected">Cancel</el-button>
+              <el-button-group>
+                <el-button size="mini" icon="el-icon-circle-check" @click="onSave(selectedEntry)"/>
+                <el-button size="mini" icon="el-icon-circle-close" @click="cleanSelected" />
+              </el-button-group>
             </div>
           </template>
         </el-table-column>
@@ -129,7 +133,7 @@ import { namespace } from 'vuex-class'
 
 import Pagination from '~/components/Pagination.vue'
 import { StateType, EntryType, Filters, SettingsType } from '~/logic/entries/types'
-import { Button, Table, TableColumn, Input } from 'element-ui'
+import { Button, ButtonGroup, Table, TableColumn, Input } from 'element-ui'
 
 const entries = namespace('entries')
 
@@ -140,6 +144,7 @@ const entries = namespace('entries')
     Table,
     TableColumn,
     Input,
+    ButtonGroup,
   },
   'middleware': ['auth'],
 })
