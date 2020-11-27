@@ -2,84 +2,84 @@
   <main>
     <div :class="$style.container">
       <div :class="$style.rowt">
-    <div :class="$style.navbar">
-      <ul>
-        <li>
-          <pagination
-            :currentDate="currentDate"
-            :activeFilter="activeFilter"
-          />
-        </li>
-        <li>Total</li>
-      </ul>
-      <div>
-        <ul>
-          <li><el-button :class="computedDay" @click="onFilter(1)">Day</el-button></li>
-          <li><el-button :class="computedWeek" @click="onFilter(2)">Week</el-button></li>
-          <li><el-button :class="computedMonth" @click="onFilter(3)">Month</el-button></li>
-        </ul>
-        <button @click="onNew">New</button>
-      </div>
-    </div>
-    <section
-      v-if="hasEntries"
-      :class="$style.tablentry"
-    >
-      <el-table :data="doSearch(entries)" class="">
-        <el-table-column label="Description" width="">
-          <template slot-scope="scope">
-            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <input
-                id="description"
-                placeholder="Type description"
-                :value="selectedEntry.description"
-                @input="updateValue"
-                :class="$style['input-mini']"
+        <div :class="$style.navbar">
+          <ul>
+            <li>
+              <pagination
+                :currentDate="currentDate"
+                :activeFilter="activeFilter"
               />
-            </div>
-            <div v-else>
-              <i class="el-icon-collection-tag"></i>
-              <span style="margin-left: 10px">{{ scope.row.description }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="Ticket" width="">
-          <template slot-scope="scope">
-            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <input
-                id="ticket"
-                placeholder="Type ticket"
-                :value="selectedEntry.ticket"
-                @input="updateValue"
-                :class="$style['input-mini']"
-              />
-            </div>
-            <div v-else>
-              <i class="el-icon-tickets"></i>
-              <span style="margin-left: 10px">{{ scope.row.ticket }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="Time" width="">
-          <template slot-scope="scope">
-            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <input
-                id="time"
-                placeholder="Type time"
-                :value="selectedEntry.time"
-                @input="updateValue"
-                :class="$style['input-mini']"
-              />
-            </div>
-            <div v-else>
-              <i class="el-icon-time"></i>
-              <span style="margin-left: 10px">{{ scope.row.time }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="When" width="">
-          <template slot-scope="scope">
-            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+            </li>
+            <li>Total</li>
+          </ul>
+          <el-row>
+            <ul>
+              <li><el-button :class="computedDay" @click="onFilter(1)">Day</el-button></li>
+              <li><el-button :class="computedWeek" @click="onFilter(2)">Week</el-button></li>
+              <li><el-button :class="computedMonth" @click="onFilter(3)">Month</el-button></li>
+            </ul>
+            <el-button size="mini" type="primary" @click="onNew">New</el-button>
+          </el-row>
+        </div>
+        <section
+          v-if="hasEntries"
+          :class="$style.tablentry"
+        >
+          <el-table :data="doSearch(entries)" class="">
+            <el-table-column label="Description" width="">
+              <template slot-scope="scope">
+                <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+                  <input
+                    id="description"
+                    placeholder="Type description"
+                    :value="selectedEntry.description"
+                    @input="updateValue"
+                    :class="$style['input-mini']"
+                  />
+                </div>
+                <div v-else>
+                  <i class="el-icon-collection-tag"></i>
+                  <span style="margin-left: 10px">{{ scope.row.description }}</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="Ticket" width="">
+              <template slot-scope="scope">
+                <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+                  <input
+                    id="ticket"
+                    placeholder="Type ticket"
+                    :value="selectedEntry.ticket"
+                    @input="updateValue"
+                    :class="$style['input-mini']"
+                  />
+                </div>
+                <div v-else>
+                  <i class="el-icon-tickets"></i>
+                  <span style="margin-left: 10px">{{ scope.row.ticket }}</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="Time" width="">
+              <template slot-scope="scope">
+                <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+                  <input
+                    id="time"
+                    placeholder="Type time"
+                    :value="selectedEntry.time"
+                    @input="updateValue"
+                    :class="$style['input-mini']"
+                  />
+                </div>
+                <div v-else>
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px">{{ scope.row.time }}</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="When" width="">
+              <template slot-scope="scope">
+                <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
               <!-- <input
                 id="when"
                 placeholder="Type when"
@@ -87,47 +87,47 @@
                 @input="updateValue"
                 :class="$style['input-mini']"
               /> -->
-              <el-date-picker
-                v-model="selectedEntry.when"
-                size="mini"
-                type="date"
-                placeholder="Pick a day">
-              </el-date-picker>
-            </div>
-            <div v-else>
-              <i class="el-icon-date"></i>
-              <span style="margin-left: 10px">{{ scope.row.when }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="right">
-          <template slot="header">
-            <el-row>
-              <input
-                :value="search"
-                @input="updateSearch($event)"
-                :class="$style['input-mini']"
-                placeholder="Type to search by description or ticket"/>
-            </el-row>
-          </template>
-          <template slot-scope="scope">
-            <div v-if="!selectedEntry || selectedEntry.id !== scope.row.id">
-              <el-button-group>
-                <el-button size="mini" icon="el-icon-edit" @click="onEntrySelect(scope.row.id)"/>
-                <el-button size="mini" icon="el-icon-document-copy" @click="onCopy(scope.row)"/>
-                <el-button size="mini" icon="el-icon-delete" type="danger" @click="onEntryDelete(scope.row)"/>
-              </el-button-group>
-            </div>
-            <div v-else>
-              <el-button-group>
-                <el-button size="mini" type="primary" icon="el-icon-circle-check" @click="onSave(selectedEntry)"/>
-                <el-button size="mini" type="danger" icon="el-icon-circle-close" @click="cleanSelected" />
-              </el-button-group>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </section>
+                  <el-date-picker
+                    v-model="selectedEntry.when"
+                    size="mini"
+                    type="date"
+                    placeholder="Pick a day">
+                  </el-date-picker>
+                </div>
+                <div v-else>
+                  <i class="el-icon-date"></i>
+                  <span style="margin-left: 10px">{{ scope.row.when }}</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot="header">
+                <el-row>
+                  <input
+                    :value="search"
+                    @input="updateSearch($event)"
+                    :class="$style['input-mini']"
+                    placeholder="Type to search by description or ticket"/>
+                </el-row>
+              </template>
+              <template slot-scope="scope">
+                <div v-if="!selectedEntry || selectedEntry.id !== scope.row.id">
+                  <el-button-group>
+                    <el-button size="mini" icon="el-icon-edit" @click="onEntrySelect(scope.row.id)"/>
+                    <el-button size="mini" icon="el-icon-document-copy" @click="onCopy(scope.row)"/>
+                    <el-button size="mini" icon="el-icon-delete" type="danger" @click="onEntryDelete(scope.row)"/>
+                  </el-button-group>
+                </div>
+                <div v-else>
+                  <el-button-group>
+                    <el-button size="mini" type="primary" icon="el-icon-circle-check" @click="onSave(selectedEntry)"/>
+                    <el-button size="mini" type="danger" icon="el-icon-circle-close" @click="cleanSelected" />
+                  </el-button-group>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </section>
       </div>
     </div>
   </main>
@@ -279,18 +279,14 @@ export default class Entries extends Vue {
 }
 
 .rowt {
-  width: 100%;
+  // width: 100%;
   padding-left: 96px;
   padding-right: 96px;
 }
 
 .navbar {
-  display: flex;
-  justify-content: space-between;
-}
-
-table {
-  width: 100%;
+  // display: flex;
+  // justify-content: space-between;
 }
 
 ul {
