@@ -2,21 +2,40 @@
   <main>
     <div :class="$style.container">
       <div :class="$style.rowt">
+        <section>
+          <div></div>
+          <div>
+            <h1>
+              <i class="el-icon-s-management"></i>
+              Fibreux
+            </h1>
+            <div>
+              <span>
+                Track your time - daily progress, tickets in progress and special occasions during your work.
+              </span>
+              <br/>
+              <span>
+              Fill entries with associated ticket and capture the data
+              </span>
+              <p>Click on `View` to filter entries by category</p>
+            </div>
+          </div>
+        </section>
         <section :class="$style.navbar">
-          <el-row :gutter="20">
+          <el-row type="flex" justify="space-between">
             <el-col :span="16">
               <pagination
                 :currentDate="currentDate"
                 :activeFilter="activeFilter"
               />
             </el-col>
-            <el-col :span="8">
-              <ul>
-                <li><el-button :class="computedDay" @click="onFilter(1)">Day</el-button></li>
-                <li><el-button :class="computedWeek" @click="onFilter(2)">Week</el-button></li>
-                <li><el-button :class="computedMonth" @click="onFilter(3)">Month</el-button></li>
-              </ul>
-              <el-button size="mini" type="primary" @click="onNew">New</el-button>
+            <el-col :span="8" :class="$style.controls">
+              <div style="float: right">
+                <el-button size="mini" :class="computedDay" @click="onFilter(1)">Day</el-button>
+                <el-button size="mini" :class="computedWeek" @click="onFilter(2)">Week</el-button>
+                <el-button size="mini" :class="computedMonth" @click="onFilter(3)">Month</el-button>
+                <el-button size="mini" type="primary" @click="onNew">New</el-button>
+              </div>
             </el-col>
           </el-row>
         </section>
@@ -284,9 +303,7 @@ export default class Entries extends Vue {
   padding-right: 96px;
 }
 
-.navbar {
-  // display: flex;
-  // justify-content: space-between;
+.controls {
 }
 
 ul {
@@ -296,11 +313,6 @@ ul {
 
 ul li {
   display: inline;
-}
-
-ul li button   {
-  background: none;
-  border: none;
 }
 
 .tablentry {
