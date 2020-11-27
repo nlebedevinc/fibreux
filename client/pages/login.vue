@@ -1,13 +1,14 @@
 <template>
   <main>
     <div :class="$style.container">
-      <form @submit.prevent="login">
-        <label for="token">
-          <h2>Token:</h2>
-          <input v-model="token" class="u-full-width" type="text" placeholder="Fibery token" id="token">
-        </label>
-        <input class="button-primary" type="submit" value="Submit">
-      </form>
+      <el-form :model="form" status-icon :rules="rules" ref="ruleForm">
+        <el-form-item label="Fibery Token" prop="token">
+          <el-input autocomplete="off" v-model="form.token"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="login">Submit</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </main>
 </template>
@@ -15,15 +16,38 @@
 <script lang="ts">
 import Component from 'nuxt-class-component'
 import Vue from 'vue'
+import { Form, FormItem, Input, Button } from 'element-ui'
+
+const validator = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('Please provide a token'))
+  } else {
+    callback()
+  }
+}
 
 @Component({
+  components: {
+    Form,
+    FormItem,
+    Input,
+    Button,
+  },
   middleware: ['authorized']
 })
 export default class Login extends Vue {
-  token: string = '';
+  form = {
+    token: '',
+  }
+
+  rules = {
+    token: [{ validator, trigger: 'blur' }]
+  }
+
+  // token: string = '';
 
   login(): Promise<void> {
-    return this.$store.dispatch('entries/login', { token: this.token })
+    return this.$store.dispatch('entries/login', { token: this.form.token })
   }
 }
 </script>
