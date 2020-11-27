@@ -2,25 +2,24 @@
   <main>
     <div :class="$style.container">
       <div :class="$style.rowt">
-        <div :class="$style.navbar">
-          <ul>
-            <li>
+        <section :class="$style.navbar">
+          <el-row :gutter="20">
+            <el-col :span="16">
               <pagination
                 :currentDate="currentDate"
                 :activeFilter="activeFilter"
               />
-            </li>
-            <li>Total</li>
-          </ul>
-          <el-row>
-            <ul>
-              <li><el-button :class="computedDay" @click="onFilter(1)">Day</el-button></li>
-              <li><el-button :class="computedWeek" @click="onFilter(2)">Week</el-button></li>
-              <li><el-button :class="computedMonth" @click="onFilter(3)">Month</el-button></li>
-            </ul>
-            <el-button size="mini" type="primary" @click="onNew">New</el-button>
+            </el-col>
+            <el-col :span="8">
+              <ul>
+                <li><el-button :class="computedDay" @click="onFilter(1)">Day</el-button></li>
+                <li><el-button :class="computedWeek" @click="onFilter(2)">Week</el-button></li>
+                <li><el-button :class="computedMonth" @click="onFilter(3)">Month</el-button></li>
+              </ul>
+              <el-button size="mini" type="primary" @click="onNew">New</el-button>
+            </el-col>
           </el-row>
-        </div>
+        </section>
         <section
           v-if="hasEntries"
           :class="$style.tablentry"
@@ -141,7 +140,7 @@ import { namespace } from 'vuex-class'
 
 import Pagination from '~/components/Pagination.vue'
 import { StateType, EntryType, Filters, SettingsType } from '~/logic/entries/types'
-import { Button, ButtonGroup, Table, TableColumn, Input, Row, DatePicker } from 'element-ui'
+import { Button, ButtonGroup, Table, TableColumn, Input, Row, DatePicker, Col } from 'element-ui'
 
 const entries = namespace('entries')
 
@@ -155,6 +154,7 @@ const entries = namespace('entries')
     ButtonGroup,
     Row,
     DatePicker,
+    Col,
   },
   'middleware': ['auth'],
 })
@@ -279,7 +279,7 @@ export default class Entries extends Vue {
 }
 
 .rowt {
-  // width: 100%;
+  width: 100%;
   padding-left: 96px;
   padding-right: 96px;
 }
