@@ -109,7 +109,7 @@
               <el-button size="mini" type="danger" @click="onEntryDelete(scope.row)">Delete</el-button>
             </div>
             <div v-else>
-              <el-button size="mini" @click="onSave(scope.row)">Save</el-button>
+              <el-button size="mini" @click="onSave(selectedEntry)">Save</el-button>
               <el-button size="mini" @click="cleanSelected">Cancel</el-button>
             </div>
           </template>
@@ -199,6 +199,7 @@ export default class Entries extends Vue {
   }
 
   onSave(entry): void {
+    console.log("Entry to save", entry)
     this.$store.dispatch('entries/saveEntry', { record: entry, settings: this.settings, date: this.currentDate, filter: this.activeFilter })
   }
 
@@ -207,8 +208,11 @@ export default class Entries extends Vue {
   }
 
   updateValue(event): void {
+
     const field = event.target.id
     const value = event.target.value
+
+    console.log({ field, value })
 
     this.$store.dispatch('entries/updateProperty', { field, value })
   }
