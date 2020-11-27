@@ -7,6 +7,8 @@ import Vue from 'vue'
 import Vuex, { Store, Plugin } from 'vuex'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
+import 'element-ui/lib/theme-chalk/reset.css'
+
 // import { createVuexStore } from 'vuex-simple'
 
 // import TypedStore from '~/logic/store'
