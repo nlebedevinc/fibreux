@@ -80,13 +80,19 @@
         <el-table-column label="When" width="">
           <template slot-scope="scope">
             <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <input
+              <!-- <input
                 id="when"
                 placeholder="Type when"
                 :value="selectedEntry.when"
                 @input="updateValue"
                 :class="$style['input-mini']"
-              />
+              /> -->
+              <el-date-picker
+                v-model="selectedEntry.when"
+                size="mini"
+                type="date"
+                placeholder="Pick a day">
+              </el-date-picker>
             </div>
             <div v-else>
               <i class="el-icon-date"></i>
@@ -96,11 +102,13 @@
         </el-table-column>
         <el-table-column align="right">
           <template slot="header">
-          <input
-            :value="search"
-            @input="updateSearch($event)"
-            :class="$style['input-mini']"
-            placeholder="Type to search by description or ticket"/>
+            <el-row>
+              <input
+                :value="search"
+                @input="updateSearch($event)"
+                :class="$style['input-mini']"
+                placeholder="Type to search by description or ticket"/>
+            </el-row>
           </template>
           <template slot-scope="scope">
             <div v-if="!selectedEntry || selectedEntry.id !== scope.row.id">
@@ -112,8 +120,8 @@
             </div>
             <div v-else>
               <el-button-group>
-                <el-button size="mini" icon="el-icon-circle-check" @click="onSave(selectedEntry)"/>
-                <el-button size="mini" icon="el-icon-circle-close" @click="cleanSelected" />
+                <el-button size="mini" type="primary" icon="el-icon-circle-check" @click="onSave(selectedEntry)"/>
+                <el-button size="mini" type="danger" icon="el-icon-circle-close" @click="cleanSelected" />
               </el-button-group>
             </div>
           </template>
@@ -133,7 +141,7 @@ import { namespace } from 'vuex-class'
 
 import Pagination from '~/components/Pagination.vue'
 import { StateType, EntryType, Filters, SettingsType } from '~/logic/entries/types'
-import { Button, ButtonGroup, Table, TableColumn, Input } from 'element-ui'
+import { Button, ButtonGroup, Table, TableColumn, Input, Row, DatePicker } from 'element-ui'
 
 const entries = namespace('entries')
 
@@ -145,6 +153,8 @@ const entries = namespace('entries')
     TableColumn,
     Input,
     ButtonGroup,
+    Row,
+    DatePicker,
   },
   'middleware': ['auth'],
 })
