@@ -25,18 +25,90 @@
       v-if="hasEntries"
       :class="$style.tablentry"
     >
-      <table class="">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Ticket</th>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Controls</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
+      <el-table :data="entries" class="">
+        <el-table-column label="Description" width="">
+          <template slot-scope="scope">
+            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+              <el-input
+                id="description"
+                size="mini"
+                placeholder="Type description"
+                :value="selectedEntry.description"
+                @input="updateValue">
+              </el-input>
+            </div>
+            <div v-else>
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.description }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Ticket" width="">
+          <template slot-scope="scope">
+            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+              <el-input
+                id="ticket"
+                size="mini"
+                placeholder="Type ticket"
+                :value="selectedEntry.ticket"
+                @input="updateValue">
+              </el-input>
+            </div>
+            <div v-else>
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.ticket }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Time" width="">
+          <template slot-scope="scope">
+            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+              <el-input
+                id="time"
+                size="mini"
+                placeholder="Type time"
+                :value="selectedEntry.time"
+                @input="updateValue">
+              </el-input>
+            </div>
+            <div v-else>
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.time }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="When" width="">
+          <template slot-scope="scope">
+            <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
+              <el-input
+                id="when"
+                size="mini"
+                placeholder="Type when"
+                :value="selectedEntry.when"
+                @input="updateValue">
+              </el-input>
+            </div>
+            <div v-else>
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.when }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Controls" width="">
+          <template slot-scope="scope">
+            <div v-if="!selectedEntry || selectedEntry.id !== scope.row.id">
+              <el-button size="mini" @click="onCopy(scope.row)">Copy</el-button>
+              <el-button size="mini" @click="onEntrySelect(scope.row.id)">Edit</el-button>
+              <el-button size="mini" type="danger" @click="onEntryDelete(scope.row)">Delete</el-button>
+            </div>
+            <div v-else>
+              <el-button size="mini" @click="onSave(scope.row)">Save</el-button>
+              <el-button size="mini" @click="cleanSelected">Cancel</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+          <!-- <tr
             v-for="entry in entries"
             :key="entry.id"
           >
@@ -79,7 +151,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
     </section>
       </div>
     </div>
@@ -94,7 +166,7 @@ import { namespace } from 'vuex-class'
 
 import Pagination from '~/components/Pagination.vue'
 import { StateType, EntryType, Filters, SettingsType } from '~/logic/entries/types'
-import { Button } from 'element-ui'
+import { Button, Table, TableColumn, Input } from 'element-ui'
 
 const entries = namespace('entries')
 
@@ -102,6 +174,9 @@ const entries = namespace('entries')
   'components': {
     Pagination,
     Button,
+    Table,
+    TableColumn,
+    Input,
   },
   'middleware': ['auth']
 })
@@ -219,11 +294,6 @@ ul {
   margin-bottom: 0px;
 }
 
-td {
-  padding-top: 2px;
-  padding-bottom: 2px;
-}
-
 ul li {
   display: inline;
 }
@@ -239,12 +309,5 @@ ul li button   {
 
 .filter-active {
   border: 1px solid red
-}
-
-button {
-  margin-bottom: 0;
-  padding: 0;
-  height: 12px;
-  line-height: 12px;
 }
 </style>
