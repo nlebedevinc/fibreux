@@ -9,20 +9,12 @@ import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/reset.css'
 
-// import { createVuexStore } from 'vuex-simple'
-
-// import TypedStore from '~/logic/store'
 import { RootStateType } from '~/logic/types'
 import comments from '~/store/records'
 import entries from '~/store/entries'
 
 Vue.use(Vuex)
 Vue.use(ElementUI, { locale })
-
-// const store: StoreOptions<RootStateType> = {
-//   modules: { comments },
-// }
-
 /**
  * Creates Vuex.Store to be used and called by Nuxt.
  *
@@ -37,7 +29,6 @@ export default function store(
   ssrContext: SSRContext,
   extraContext: { plugins: Plugin<RootStateType>[] },
 ): Store<RootStateType> {
-  // const typedStore = new TypedStore()
   return new Store<RootStateType>({
     'modules': {
       'comments': comments,
@@ -45,8 +36,4 @@ export default function store(
     },
     'plugins': extraContext ? extraContext.plugins : [],
   })
-
-  // return createVuexStore(typedStore, {
-  //   'plugins': extraContext ? extraContext.plugins : [],
-  // })
 }
