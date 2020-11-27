@@ -119,5 +119,13 @@ export const mutations: MutationTree<StateType> = {
       ...state.selectedEntry,
       [field]: value,
     } as EntryType
+  },
+
+  [reducers.UPDATE_SEARCH]: (
+    state,
+    { value }
+  ): void => {
+    console.log('Mutation', value)
+    state.search = value
   }
 }

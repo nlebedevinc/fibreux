@@ -22,5 +22,10 @@ export const getters: GetterTree<StateType, RootStateType> = {
 
   currentSettings (state): SettingsType {
     return state.settings
+  },
+
+  search (state): string {
+    console.log(state.search)
+    return state.search
   }
 }

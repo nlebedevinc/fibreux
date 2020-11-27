@@ -25,20 +25,20 @@
       v-if="hasEntries"
       :class="$style.tablentry"
     >
-      <el-table :data="entries" class="">
+      <el-table :data="doSearch(entries)" class="">
         <el-table-column label="Description" width="">
           <template slot-scope="scope">
             <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <el-input
+              <input
                 id="description"
-                size="mini"
                 placeholder="Type description"
                 :value="selectedEntry.description"
-                @input="updateValue">
-              </el-input>
+                @input="updateValue"
+                :class="$style['input-mini']"
+              />
             </div>
             <div v-else>
-              <i class="el-icon-time"></i>
+              <i class="el-icon-collection-tag"></i>
               <span style="margin-left: 10px">{{ scope.row.description }}</span>
             </div>
           </template>
@@ -46,16 +46,16 @@
         <el-table-column label="Ticket" width="">
           <template slot-scope="scope">
             <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <el-input
+              <input
                 id="ticket"
-                size="mini"
                 placeholder="Type ticket"
                 :value="selectedEntry.ticket"
-                @input="updateValue">
-              </el-input>
+                @input="updateValue"
+                :class="$style['input-mini']"
+              />
             </div>
             <div v-else>
-              <i class="el-icon-time"></i>
+              <i class="el-icon-tickets"></i>
               <span style="margin-left: 10px">{{ scope.row.ticket }}</span>
             </div>
           </template>
@@ -63,13 +63,13 @@
         <el-table-column label="Time" width="">
           <template slot-scope="scope">
             <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <el-input
+              <input
                 id="time"
-                size="mini"
                 placeholder="Type time"
                 :value="selectedEntry.time"
-                @input="updateValue">
-              </el-input>
+                @input="updateValue"
+                :class="$style['input-mini']"
+              />
             </div>
             <div v-else>
               <i class="el-icon-time"></i>
@@ -80,21 +80,28 @@
         <el-table-column label="When" width="">
           <template slot-scope="scope">
             <div v-if="selectedEntry && scope.row.id === selectedEntry.id">
-              <el-input
+              <input
                 id="when"
-                size="mini"
                 placeholder="Type when"
                 :value="selectedEntry.when"
-                @input="updateValue">
-              </el-input>
+                @input="updateValue"
+                :class="$style['input-mini']"
+              />
             </div>
             <div v-else>
-              <i class="el-icon-time"></i>
+              <i class="el-icon-date"></i>
               <span style="margin-left: 10px">{{ scope.row.when }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Controls" width="">
+        <el-table-column align="right">
+          <template slot="header">
+          <input
+            :value="search"
+            @input="updateSearch($event)"
+            :class="$style['input-mini']"
+            placeholder="Type to search by description or ticket"/>
+          </template>
           <template slot-scope="scope">
             <div v-if="!selectedEntry || selectedEntry.id !== scope.row.id">
               <el-button size="mini" @click="onCopy(scope.row)">Copy</el-button>
@@ -108,50 +115,6 @@
           </template>
         </el-table-column>
       </el-table>
-          <!-- <tr
-            v-for="entry in entries"
-            :key="entry.id"
-          >
-            <td>
-              <input id="description" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.description" @input="updateValue">
-              <span v-else>{{ entry.description }}</span>
-            </td>
-            <td>
-              <input id="ticket" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.ticket" @input="updateValue">
-              <span v-else>{{ entry.ticket }}</span>
-            </td>
-            <td>
-               <input id="time" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.time" @input="updateValue">
-              <span v-else>{{ entry.time }}</span>
-            </td>
-            <td>
-              <input id="when" v-if="selectedEntry && entry.id === selectedEntry.id" :value="selectedEntry.when" @input="updateValue">
-              <span v-else>{{ entry.when }}</span>
-            </td>
-            <td>
-              <ul v-if="!selectedEntry || selectedEntry.id !== entry.id">
-                <li>
-                  <button @click="onCopy(entry)">Copy</button>
-                </li>
-                <li>
-                  <button @click="onEntrySelect(entry.id)">Edit</button>
-                </li>
-                <li>
-                  <button @click="onEntryDelete(entry)">Delete</button>
-                </li>
-              </ul>
-              <ul v-else>
-                <li>
-                  <button @click="onSave(selectedEntry)">Save</button>
-                </li>
-                <li>
-                  <button @click="cleanSelected">Cancel</button>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
     </section>
       </div>
     </div>
@@ -178,7 +141,7 @@ const entries = namespace('entries')
     TableColumn,
     Input,
   },
-  'middleware': ['auth']
+  'middleware': ['auth'],
 })
 export default class Entries extends Vue {
   @entries.State('entries')
@@ -198,6 +161,9 @@ export default class Entries extends Vue {
 
   @entries.Getter('currentSettings')
   settings!: SettingsType
+
+  @entries.Getter('search')
+  search!: string
 
   fetch({ store }: { store: Store<StateType> }): Promise<EntryType[]> {
     return store.dispatch('entries/loadDataAndEntries')
@@ -245,6 +211,25 @@ export default class Entries extends Vue {
     const value = event.target.value
 
     this.$store.dispatch('entries/updateProperty', { field, value })
+  }
+
+  updateSearch(event): void {
+    const value = event.target.value
+    this.$store.dispatch('entries/updateSearch', { value })
+  }
+
+  doSearch(entries: EntryType[]): EntryType[] {
+    const filter = ((entry: EntryType) => {
+      if (!this.search) {
+        return true
+      }
+
+      const byDescription = entry.description!.toLowerCase().includes(this.search.toLowerCase())
+      const byTicket = entry.ticket!.toLowerCase().includes(this.search.toLowerCase())
+
+      return byDescription || byTicket
+    })
+    return entries.filter(filter)
   }
 
   get computedDay(): Readonly<Record<string, boolean>> {
@@ -309,5 +294,27 @@ ul li button   {
 
 .filter-active {
   border: 1px solid red
+}
+
+.input-mini {
+  font-size: 12px;
+  height: 28px;
+  line-height: 28px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #DCDFE6;
+  box-sizing: border-box;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #606266;
+  width: 100%;
+  outline: 0
+}
+
+.input-mini:focus {
+  border-color: #409EFF;
+  outline: 0
 }
 </style>

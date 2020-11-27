@@ -64,4 +64,5 @@ export interface StateType {
   activeDate: Date
   selectedEntry: EntryType | null
   settings: SettingsType
+  search: string
 }

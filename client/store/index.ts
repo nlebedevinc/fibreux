@@ -6,6 +6,7 @@ import { ssrContext as SSRContext } from 'nuxt'
 import Vue from 'vue'
 import Vuex, { Store, Plugin } from 'vuex'
 import ElementUI from 'element-ui'
+import locale from 'element-ui/lib/locale/lang/en'
 // import { createVuexStore } from 'vuex-simple'
 
 // import TypedStore from '~/logic/store'
@@ -14,7 +15,7 @@ import comments from '~/store/records'
 import entries from '~/store/entries'
 
 Vue.use(Vuex)
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale })
 
 // const store: StoreOptions<RootStateType> = {
 //   modules: { comments },

@@ -5,6 +5,7 @@ export const state = (): StateType => ({
   'activeFilter': Filters.Month,
   'activeDate': new Date(),
   'selectedEntry': null,
+  'search': '',
   'settings': {
     team: '',
     specialist: '',

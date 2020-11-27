@@ -109,5 +109,10 @@ export const actions: ActionTree<StateType, RootStateType> = {
     if (!result.error) {
       dispatch('fetchEntries', { date, filter })
     }
+  },
+
+  // search
+  updateSearch ({ commit }, payload): void {
+    commit(reducers.UPDATE_SEARCH, payload)
   }
 }
