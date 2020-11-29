@@ -5,7 +5,7 @@
         <h1>Log in</h1>
         <el-form :class="form" :model="form" status-icon :rules="rules" ref="ruleForm">
           <el-form-item label="Fibery Token" prop="token">
-          <el-input autocomplete="off" v-model="form.token"></el-input>
+          <el-input autocomplete="off" v-model="form.token" placeholder="Enter your fibery token..."></el-input>
           </el-form-item>
           <el-form-item>
             <el-button :class="$style.submit" type="primary" @click="login">Continue with token</el-button>
