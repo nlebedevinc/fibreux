@@ -1,14 +1,17 @@
 <template>
   <main>
     <div :class="$style.container">
-      <el-form :model="form" status-icon :rules="rules" ref="ruleForm">
-        <el-form-item label="Fibery Token" prop="token">
+      <div :class="$style['form-container']">
+        <h1>Log in</h1>
+        <el-form :class="form" :model="form" status-icon :rules="rules" ref="ruleForm">
+          <el-form-item label="Fibery Token" prop="token">
           <el-input autocomplete="off" v-model="form.token"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="login">Submit</el-button>
-        </el-form-item>
-      </el-form>
+          </el-form-item>
+          <el-form-item>
+            <el-button :class="$style.submit" type="primary" @click="login">Continue with token</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </main>
 </template>
@@ -44,8 +47,6 @@ export default class Login extends Vue {
     token: [{ validator, trigger: 'blur' }]
   }
 
-  // token: string = '';
-
   login(): Promise<void> {
     return this.$store.dispatch('entries/login', { token: this.form.token })
   }
@@ -57,10 +58,15 @@ export default class Login extends Vue {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 12vh;
 }
 
-.row {
-  padding-left: 96px;
-  padding-right: 96px;
+.form-container {
+  width: 100%;
+  max-width: 320px;
+}
+
+.submit {
+  width: 100%
 }
 </style>
